@@ -5,8 +5,8 @@ public class SceneGenerator : MonoBehaviour
     public int BoardSize = 8;
     public GameObject DarkTilePrefab;
     public GameObject LightTilePrefab;
-    public GameObject DarkPiecePrefab;
-    public GameObject LightPiecePrefab;
+    public GameObject DarkPawnPrefab;
+    public GameObject LightPawnPrefab;
 
     void Start()
     {
@@ -14,8 +14,22 @@ public class SceneGenerator : MonoBehaviour
         {
             for (int z = 0; z < BoardSize; z++)
             {
-                GameObject tilePrefab = (x + z) % 2 == 0 ? DarkTilePrefab : LightTilePrefab;
-                Instantiate(tilePrefab, new Vector3(x, 0, z), Quaternion.identity);
+                if ((x + z) % 2 == 0)
+                {
+                    Instantiate(DarkTilePrefab, new Vector3(x, 0, z), Quaternion.identity);
+                    if (z < 3)
+                    {
+                        Instantiate(LightPawnPrefab, new Vector3(x, 0.5f, z), Quaternion.identity);
+                    }
+                    else if (z > 4)
+                    {
+                        Instantiate(DarkPawnPrefab, new Vector3(x, 0.5f, z), Quaternion.identity);
+                    }
+                }
+                else
+                {
+                    Instantiate(LightTilePrefab, new Vector3(x, 0, z), Quaternion.identity);
+                }
             }
         }
     }

@@ -155,8 +155,8 @@ MonoBehaviour:
   BoardSize: 8
   DarkTilePrefab: {fileID: 5334486158670459260, guid: ca53355d2a0d0de4b91376e03f0994ee, type: 3}
   LightTilePrefab: {fileID: 1912046305033671382, guid: bde38fb583107624cb4929c850691e88, type: 3}
-  DarkPiecePrefab: {fileID: 0}
-  LightPiecePrefab: {fileID: 0}
+  DarkPawnPrefab: {fileID: 3099465550219264480, guid: e2b76cd290f5a9f4f8ff456b79991013, type: 3}
+  LightPawnPrefab: {fileID: 8466160852882077302, guid: a309d09250b7cfd4a8069c803d5d8571, type: 3}
 --- !u!4 &395952161
 Transform:
   m_ObjectHideFlags: 0
@@ -352,7 +352,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 3, y: 5, z: -2}
+  m_LocalPosition: {x: 3, y: 4, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
