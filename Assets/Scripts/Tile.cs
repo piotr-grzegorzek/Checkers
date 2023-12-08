@@ -2,6 +2,14 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    private bool _isDark;
+    private Renderer _renderer;
+
+    void Awake()
+    {
+        _renderer = GetComponent<Renderer>();
+    }
+
     public bool IsDark
     {
         get => _isDark;
@@ -10,10 +18,8 @@ public class Tile : MonoBehaviour
             _isDark = value;
             if (_isDark)
             {
-                GetComponent<Renderer>().material.color = Color.black;
+                _renderer.material.color = Color.black;
             }
         }
     }
-
-    private bool _isDark;
 }

@@ -5,7 +5,12 @@ public class Piece : MonoBehaviour
     public bool IsKing;
 
     private bool _isDark;
+    private Renderer _renderer;
 
+    void Awake()
+    {
+        _renderer = GetComponent<Renderer>();
+    }
     void OnMouseDown()
     {
         // Called when the mouse is clicked over the collider
@@ -18,15 +23,10 @@ public class Piece : MonoBehaviour
         set
         {
             _isDark = value;
-            UpdateColor();
-        }
-    }
-
-    private void UpdateColor()
-    {
-        if (_isDark && TryGetComponent(out Renderer renderer))
-        {
-            renderer.material.color = Color.black;
+            if (_isDark)
+            {
+                _renderer.material.color = Color.black;
+            }
         }
     }
 }
