@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
+    public LayerMask PieceMask;
     public PieceType Type;
     public GameColor PieceColor
     {
@@ -20,9 +21,18 @@ public class Piece : MonoBehaviour
     {
         _renderer = GetComponent<Renderer>();
     }
-    void OnMouseDown()
+    void Update()
     {
-        // Called when the mouse is clicked over the collider
-        Debug.Log($"Clicked on {nameof(Piece)}");
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 123, PieceMask))
+            {
+                if (hit.transform.gameObject == gameObject)
+                {
+                    Debug.Log($"Clicked on {nameof(Piece)}");
+                }
+            }
+        }
     }
 }
