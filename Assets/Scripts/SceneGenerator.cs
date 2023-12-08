@@ -23,16 +23,21 @@ public class SceneGenerator : MonoBehaviour
                     tileScript.IsDark = true;
                     if (z < _lightPieceRowEnd)
                     {
-                        Instantiate(PiecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity);
+                        InstantiatePiece(x, z);
                     }
                     else if (z >= _darkPieceRowStart - 1)
                     {
-                        GameObject piece = Instantiate(PiecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity);
+                        GameObject piece = InstantiatePiece(x, z);
                         Piece pieceScript = piece.GetComponent<Piece>();
                         pieceScript.IsDark = true;
                     }
                 }
             }
         }
+    }
+
+    private GameObject InstantiatePiece(int x, int z)
+    {
+        return Instantiate(PiecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity);
     }
 }
