@@ -11,32 +11,52 @@ public class SceneGenerator : MonoBehaviour
 
     void Start()
     {
+        GenerateBoard();
+    }
+
+    private void GenerateBoard()
+    {
         for (int x = 0; x < BoardSize; x++)
         {
             for (int z = 0; z < BoardSize; z++)
             {
-                GameObject tile = Instantiate(TilePrefab, new Vector3(x, 0, z), Quaternion.identity);
-                if ((x + z) % 2 == 0)
-                {
-                    Tile tileScript = tile.GetComponent<Tile>();
-                    tileScript.TileColor = GameColor.Dark;
-                    if (z < RowsPerTeam)
-                    {
-                        InstantiatePiece(x, z);
-                    }
-                    else if (z >= BoardSize - RowsPerTeam)
-                    {
-                        GameObject piece = InstantiatePiece(x, z);
-                        Piece pieceScript = piece.GetComponent<Piece>();
-                        pieceScript.PieceColor = GameColor.Dark;
-                    }
-                }
+                GenerateTile(x, z);
             }
         }
     }
-
+    private void GenerateTile(int x, int z)
+    {
+        GameObject tile = Instantiate(TilePrefab, new Vector3(x, 0, z), Quaternion.identity);
+        if ((x + z) % 2 == 0)
+        {
+            SetTileColor(tile, GameColor.Dark);
+            InstantiatePieceIfNeeded(x, z);
+        }
+    }
+    private void SetTileColor(GameObject tile, GameColor color)
+    {
+        Tile tileScript = tile.GetComponent<Tile>();
+        tileScript.TileColor = color;
+    }
+    private void InstantiatePieceIfNeeded(int x, int z)
+    {
+        if (z < RowsPerTeam)
+        {
+            InstantiatePiece(x, z);
+        }
+        else if (z >= BoardSize - RowsPerTeam)
+        {
+            GameObject piece = InstantiatePiece(x, z);
+            SetPieceColor(piece, GameColor.Dark);
+        }
+    }
     private GameObject InstantiatePiece(int x, int z)
     {
         return Instantiate(PiecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity);
+    }
+    private void SetPieceColor(GameObject piece, GameColor color)
+    {
+        Piece pieceScript = piece.GetComponent<Piece>();
+        pieceScript.PieceColor = color;
     }
 }
