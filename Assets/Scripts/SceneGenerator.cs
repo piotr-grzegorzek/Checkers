@@ -3,12 +3,11 @@ using UnityEngine;
 public class SceneGenerator : MonoBehaviour
 {
     public int BoardSize = 8;
+    public int RowsPerTeam = 3;
     public GameObject TilePrefab;
     public GameObject PiecePrefab;
 
     private const float _pieceUpOffset = 0.5f;
-    private const float _lightPieceRowEnd = 3;
-    private const int _darkPieceRowStart = 6;
 
     void Start()
     {
@@ -21,11 +20,11 @@ public class SceneGenerator : MonoBehaviour
                 {
                     Tile tileScript = tile.GetComponent<Tile>();
                     tileScript.IsDark = true;
-                    if (z < _lightPieceRowEnd)
+                    if (z < RowsPerTeam)
                     {
                         InstantiatePiece(x, z);
                     }
-                    else if (z >= _darkPieceRowStart - 1)
+                    else if (z >= BoardSize - RowsPerTeam)
                     {
                         GameObject piece = InstantiatePiece(x, z);
                         Piece pieceScript = piece.GetComponent<Piece>();

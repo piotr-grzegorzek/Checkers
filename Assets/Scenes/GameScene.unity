@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoardSize: 8
+  RowsPerTeam: 3
   TilePrefab: {fileID: 1912046305033671382, guid: bde38fb583107624cb4929c850691e88, type: 3}
   PiecePrefab: {fileID: 8466160852882077302, guid: a309d09250b7cfd4a8069c803d5d8571, type: 3}
 --- !u!4 &395952161
