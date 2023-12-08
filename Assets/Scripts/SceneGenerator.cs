@@ -19,7 +19,7 @@ public class SceneGenerator : MonoBehaviour
                 if ((x + z) % 2 == 0)
                 {
                     Tile tileScript = tile.GetComponent<Tile>();
-                    tileScript.IsDark = true;
+                    tileScript.TileColor = GameColor.Dark;
                     if (z < RowsPerTeam)
                     {
                         InstantiatePiece(x, z);
@@ -28,7 +28,7 @@ public class SceneGenerator : MonoBehaviour
                     {
                         GameObject piece = InstantiatePiece(x, z);
                         Piece pieceScript = piece.GetComponent<Piece>();
-                        pieceScript.IsDark = true;
+                        pieceScript.PieceColor = GameColor.Dark;
                     }
                 }
             }

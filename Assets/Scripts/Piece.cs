@@ -2,20 +2,17 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
-    public bool IsKing;
-    public bool IsDark
+    public PieceType Type;
+    public GameColor PieceColor
     {
-        get => _isDark;
+        get => _pieceColor;
         set
         {
-            _isDark = value;
-            if (_isDark)
-            {
-                _renderer.material.color = Color.black;
-            }
+            _pieceColor = value;
+            _renderer.material.color = value == GameColor.Light ? Color.white : Color.black;
         }
     }
-    private bool _isDark;
+    private GameColor _pieceColor;
 
     private Renderer _renderer;
 

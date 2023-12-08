@@ -2,19 +2,16 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public bool IsDark
+    public GameColor TileColor
     {
-        get => _isDark;
+        get => _tileColor;
         set
         {
-            _isDark = value;
-            if (_isDark)
-            {
-                _renderer.material.color = Color.black;
-            }
+            _tileColor = value;
+            _renderer.material.color = value == GameColor.Light ? Color.white : Color.black;
         }
     }
-    private bool _isDark;
+    private GameColor _tileColor;
 
     private Renderer _renderer;
 
