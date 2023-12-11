@@ -12,6 +12,7 @@ public class SceneGenerator : MonoBehaviour
     void Start()
     {
         GenerateBoard();
+        Destroy(gameObject);
     }
 
     private void GenerateBoard()
