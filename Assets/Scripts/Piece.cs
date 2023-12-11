@@ -9,7 +9,8 @@ public class Piece : MonoBehaviour
         set
         {
             _pieceColor = value;
-            _renderer.material.color = value == GameColor.Light ? Color.white : Color.black;
+            Rules rules = RulesFactory.Rules();
+            _renderer.material.color = value == GameColor.Light ? Color.white : rules.DarkPieceColor;
         }
     }
     private GameColor _pieceColor;

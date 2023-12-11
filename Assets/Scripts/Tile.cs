@@ -8,7 +8,8 @@ public class Tile : MonoBehaviour
         set
         {
             _tileColor = value;
-            _renderer.material.color = value == GameColor.Light ? Color.white : Color.black;
+            Rules rules = RulesFactory.Rules();
+            _renderer.material.color = value == GameColor.Light ? Color.white : rules.PlayableTileColor;
         }
     }
     private GameColor _tileColor;

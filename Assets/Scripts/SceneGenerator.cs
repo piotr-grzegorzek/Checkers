@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class SceneGenerator : MonoBehaviour
 {
-    public int BoardSize = 8;
-    public int RowsPerTeam = 3;
+    public int BoardSize;
+    public int RowsPerTeam;
     public GameObject TilePrefab;
     public GameObject PiecePrefab;
 
@@ -11,6 +11,9 @@ public class SceneGenerator : MonoBehaviour
 
     void Start()
     {
+        Rules rules = RulesFactory.Rules();
+        BoardSize = rules.BoardSize;
+        RowsPerTeam = rules.RowsPerTeam;
         GenerateBoard();
         Destroy(gameObject);
     }
