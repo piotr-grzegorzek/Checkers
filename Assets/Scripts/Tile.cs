@@ -8,7 +8,7 @@ public class Tile : MonoBehaviour
         set
         {
             _tileColor = value;
-            Rules rules = RulesFactory.Rules();
+            Rules rules = RulesController.Instance.Get();
             _renderer.material.color = value == GameColor.Light ? Color.white : rules.PlayableTileColor;
         }
     }

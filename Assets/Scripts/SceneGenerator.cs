@@ -2,27 +2,27 @@ using UnityEngine;
 
 public class SceneGenerator : MonoBehaviour
 {
-    public int BoardSize;
-    public int RowsPerTeam;
     public GameObject TilePrefab;
     public GameObject PiecePrefab;
 
+    private int _boardSize;
+    private int _rowsPerTeam;
     private const float _pieceUpOffset = 0.5f;
 
     void Start()
     {
-        Rules rules = RulesFactory.Rules();
-        BoardSize = rules.BoardSize;
-        RowsPerTeam = rules.RowsPerTeam;
+        Rules rules = RulesController.Instance.Get();
+        _boardSize = rules.BoardSize;
+        _rowsPerTeam = rules.RowsPerTeam;
         GenerateBoard();
         Destroy(gameObject);
     }
 
     private void GenerateBoard()
     {
-        for (int x = 0; x < BoardSize; x++)
+        for (int x = 0; x < _boardSize; x++)
         {
-            for (int z = 0; z < BoardSize; z++)
+            for (int z = 0; z < _boardSize; z++)
             {
                 GenerateTile(x, z);
             }
@@ -44,11 +44,11 @@ public class SceneGenerator : MonoBehaviour
     }
     private void InstantiatePieceIfNeeded(int x, int z)
     {
-        if (z < RowsPerTeam)
+        if (z < _rowsPerTeam)
         {
             InstantiatePiece(x, z);
         }
-        else if (z >= BoardSize - RowsPerTeam)
+        else if (z >= _boardSize - _rowsPerTeam)
         {
             GameObject piece = InstantiatePiece(x, z);
             SetPieceColor(piece, GameColor.Dark);

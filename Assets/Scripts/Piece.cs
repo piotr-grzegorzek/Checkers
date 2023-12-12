@@ -9,7 +9,7 @@ public class Piece : MonoBehaviour
         set
         {
             _pieceColor = value;
-            Rules rules = RulesFactory.Rules();
+            Rules rules = RulesController.Instance.Get();
             _renderer.material.color = value == GameColor.Light ? Color.white : rules.DarkPieceColor;
         }
     }
