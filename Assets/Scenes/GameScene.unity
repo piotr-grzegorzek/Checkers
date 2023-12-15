@@ -154,7 +154,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tilePrefab: {fileID: 1912046305033671382, guid: bde38fb583107624cb4929c850691e88, type: 3}
   _piecePrefab: {fileID: 8466160852882077302, guid: a309d09250b7cfd4a8069c803d5d8571, type: 3}
-  _markerPrefab: {fileID: 1238186707963280847, guid: 0fb04c9aa37b6ba458b1fb069e95b138, type: 3}
 --- !u!4 &395952161
 Transform:
   m_ObjectHideFlags: 0
@@ -202,10 +201,9 @@ MonoBehaviour:
   _pieceMask:
     serializedVersion: 2
     m_Bits: 64
-  _markerMask:
+  _movementMarkerMask:
     serializedVersion: 2
     m_Bits: 128
-  _sceneGenerator: {fileID: 395952160}
 --- !u!4 &451320094
 Transform:
   m_ObjectHideFlags: 0

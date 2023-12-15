@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
+    [SerializeField]
+    GameObject _movementMarkerPrefab;
+
     internal PieceType Type;
     internal GameColor PieceColor
     {
@@ -15,7 +18,6 @@ public class Piece : MonoBehaviour
         }
     }
     private GameColor _pieceColor;
-    internal List<Vector3> AvailableMovements { get; set; }
 
     private Renderer _renderer;
 
@@ -24,10 +26,9 @@ public class Piece : MonoBehaviour
         _renderer = GetComponent<Renderer>();
     }
 
-    internal Dictionary<Vector3, Piece> GetAvailableMovementsWithCaptures()
+    internal void MakeMovementMarkers()
     {
-        Dictionary<Vector3, Piece> availableMovementsWithCaptures = new Dictionary<Vector3, Piece>();
-
+        ClearMovementMarkers();
         // Define the possible movement directions for a piece
         List<Vector3> directions;
         if (PieceColor == GameColor.Dark)
@@ -37,6 +38,7 @@ public class Piece : MonoBehaviour
         }
         else
         {
+            // The light pieces move in the positive z direction
             directions = new List<Vector3> { Vector3.forward + Vector3.right, Vector3.forward + Vector3.left };
         }
 
@@ -55,31 +57,31 @@ public class Piece : MonoBehaviour
 
                         if (IsWithinBoard(capturePosition) && GetPieceAtPosition(capturePosition) == null)
                         {
-                            availableMovementsWithCaptures.Add(capturePosition, otherPiece);
+                            GameObject marker = Instantiate(_movementMarkerPrefab, capturePosition, Quaternion.identity);
+                            MovementMarker markerScript = marker.GetComponent<MovementMarker>();
+                            markerScript.SourcePiece = this;
+                            markerScript.CapturablePieces = new List<Piece> { otherPiece };
                         }
                     }
                 }
                 else
                 {
-                    availableMovementsWithCaptures.Add(nextPosition, null);
+                    GameObject marker = Instantiate(_movementMarkerPrefab, nextPosition, Quaternion.identity);
+                    MovementMarker markerScript = marker.GetComponent<MovementMarker>();
+                    markerScript.SourcePiece = this;
+                    markerScript.CapturablePieces = new List<Piece>();
                 }
             }
         }
-
-        return availableMovementsWithCaptures;
     }
-    internal void MoveTo(Vector3 newPosition)
+
+    private void ClearMovementMarkers()
     {
-        if (AvailableMovements.Contains(newPosition))
+        foreach (var marker in FindObjectsOfType<MovementMarker>())
         {
-            transform.position = newPosition;
-        }
-        else
-        {
-            Debug.Log("Invalid move");
+            Destroy(marker.gameObject);
         }
     }
-
     private bool IsWithinBoard(Vector3 position)
     {
         Rules rules = RulesController.Instance.Get();
