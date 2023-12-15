@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InputController : MonoBehaviour
@@ -30,18 +31,26 @@ public class InputController : MonoBehaviour
                     _markers.Clear();
 
                     _selectedPiece = piece;
-                    piece.AvailableMovements = piece.GetAvailableMovements();
+                    var availableMovementsWithCaptures = piece.GetAvailableMovementsWithCaptures();
+                    piece.AvailableMovements = availableMovementsWithCaptures.Keys.ToList();
                     _markers = _sceneGenerator.MarkAvailablePositions(piece);
                 }
             }
             else
             {
-
                 if (Physics.Raycast(ray, out RaycastHit hit2, 1000, _markerMask))
                 {
                     Debug.Log("Marker clicked");
-                    _selectedPiece.MoveTo(hit2.transform.position);
-                    _selectedPiece = null;
+                    if (_selectedPiece.AvailableMovements.Contains(hit2.transform.position))
+                    {
+                        var capturedPiece = _selectedPiece.GetAvailableMovementsWithCaptures()[hit2.transform.position];
+                        if (capturedPiece != null)
+                        {
+                            Destroy(capturedPiece.gameObject);
+                        }
+                        _selectedPiece.MoveTo(hit2.transform.position);
+                        _selectedPiece = null;
+                    }
                 }
             }
         }

@@ -24,9 +24,9 @@ public class Piece : MonoBehaviour
         _renderer = GetComponent<Renderer>();
     }
 
-    internal List<Vector3> GetAvailableMovements()
+    internal Dictionary<Vector3, Piece> GetAvailableMovementsWithCaptures()
     {
-        List<Vector3> availableMovements = new List<Vector3>();
+        Dictionary<Vector3, Piece> availableMovementsWithCaptures = new Dictionary<Vector3, Piece>();
 
         // Define the possible movement directions for a piece
         List<Vector3> directions;
@@ -44,33 +44,29 @@ public class Piece : MonoBehaviour
         {
             Vector3 nextPosition = transform.position + direction;
 
-            // Check if the next position is within the board boundaries
             if (IsWithinBoard(nextPosition))
             {
-                // Check if the next position is occupied by another piece
                 Piece otherPiece = GetPieceAtPosition(nextPosition);
                 if (otherPiece != null)
                 {
-                    // If the other piece is of the opposite color, it can be captured
                     if (otherPiece.PieceColor != PieceColor)
                     {
                         Vector3 capturePosition = nextPosition + direction;
 
-                        // Check if the capture position is within the board and not occupied
                         if (IsWithinBoard(capturePosition) && GetPieceAtPosition(capturePosition) == null)
                         {
-                            availableMovements.Add(capturePosition);
+                            availableMovementsWithCaptures.Add(capturePosition, otherPiece);
                         }
                     }
                 }
                 else
                 {
-                    availableMovements.Add(nextPosition);
+                    availableMovementsWithCaptures.Add(nextPosition, null);
                 }
             }
         }
 
-        return availableMovements;
+        return availableMovementsWithCaptures;
     }
     internal void MoveTo(Vector3 newPosition)
     {
