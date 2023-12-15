@@ -38,24 +38,15 @@ public class InputController : MonoBehaviour
     {
         if (hit.collider.TryGetComponent<Piece>(out var piece))
         {
-            ClearMarkers();
             SelectPiece(piece);
         }
-    }
-    private void ClearMarkers()
-    {
-        for (int i = 0; i < _markers.Count; i++)
-        {
-            Destroy(_markers[i]);
-        }
-        _markers.Clear();
     }
     private void SelectPiece(Piece piece)
     {
         _selectedPiece = piece;
         var availableMovementsWithCaptures = piece.GetAvailableMovementsWithCaptures();
         piece.AvailableMovements = availableMovementsWithCaptures.Keys.ToList();
-        _markers = _sceneGenerator.MarkAvailablePositions(piece);
+        _sceneGenerator.MarkAvailablePositions(piece);
     }
     private void HandleMarkerClick(RaycastHit hit)
     {

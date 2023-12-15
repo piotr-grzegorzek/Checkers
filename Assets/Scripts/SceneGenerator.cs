@@ -10,6 +10,7 @@ public class SceneGenerator : MonoBehaviour
     [SerializeField]
     GameObject _markerPrefab;
 
+    private List<GameObject> _markers = new List<GameObject>();
     private int _boardSize;
     private int _rowsPerTeam;
     private const float _pieceUpOffset = 0.5f;
@@ -22,15 +23,22 @@ public class SceneGenerator : MonoBehaviour
         GenerateBoard();
     }
 
-    internal List<GameObject> MarkAvailablePositions(Piece piece)
+    internal void MarkAvailablePositions(Piece piece)
     {
-        List<GameObject> markers = new List<GameObject>();
+        ClearMarkers();
         foreach (var position in piece.AvailableMovements)
         {
             GameObject marker = Instantiate(_markerPrefab, position, Quaternion.identity);
-            markers.Add(marker);
+            _markers.Add(marker);
         }
-        return markers;
+    }
+    internal void ClearMarkers()
+    {
+        for (int i = 0; i < _markers.Count; i++)
+        {
+            Destroy(_markers[i]);
+        }
+        _markers.Clear();
     }
 
     private void GenerateBoard()
