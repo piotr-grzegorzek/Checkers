@@ -64,6 +64,17 @@ public class Piece : MonoBehaviour
 
         return availableMovements;
     }
+    internal void MoveTo(Vector3 newPosition)
+    {
+        if (AvailableMovements.Contains(newPosition))
+        {
+            transform.position = newPosition;
+        }
+        else
+        {
+            Debug.Log("Invalid move");
+        }
+    }
 
     private bool IsWithinBoard(Vector3 position)
     {

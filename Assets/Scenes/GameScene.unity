@@ -202,6 +202,9 @@ MonoBehaviour:
   _pieceMask:
     serializedVersion: 2
     m_Bits: 64
+  _markerMask:
+    serializedVersion: 2
+    m_Bits: 128
   _sceneGenerator: {fileID: 395952160}
 --- !u!4 &451320094
 Transform:

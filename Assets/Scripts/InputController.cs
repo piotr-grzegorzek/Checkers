@@ -6,6 +6,8 @@ public class InputController : MonoBehaviour
     [SerializeField]
     LayerMask _pieceMask;
     [SerializeField]
+    LayerMask _markerMask;
+    [SerializeField]
     SceneGenerator _sceneGenerator;
 
     private Piece _selectedPiece;
@@ -16,24 +18,30 @@ public class InputController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 123, _pieceMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000, _pieceMask))
             {
+                Debug.Log("Piece clicked");
                 if (hit.collider.TryGetComponent<Piece>(out var piece))
                 {
-                    // If a new piece is selected, destroy the existing markers
-                    if (_selectedPiece != piece)
+                    for (int i = 0; i < _markers.Count; i++)
                     {
-                        foreach (var marker in _markers)
-                        {
-                            Destroy(marker);
-                        }
-                        _markers.Clear();
+                        Destroy(_markers[i]);
                     }
+                    _markers.Clear();
 
                     _selectedPiece = piece;
                     piece.AvailableMovements = piece.GetAvailableMovements();
                     _markers = _sceneGenerator.MarkAvailablePositions(piece);
-                    Debug.Log($"Available movements for {piece.Type} at {piece.transform.position}: {string.Join(", ", piece.AvailableMovements)}");
+                }
+            }
+            else
+            {
+
+                if (Physics.Raycast(ray, out RaycastHit hit2, 1000, _markerMask))
+                {
+                    Debug.Log("Marker clicked");
+                    _selectedPiece.MoveTo(hit2.transform.position);
+                    _selectedPiece = null;
                 }
             }
         }
