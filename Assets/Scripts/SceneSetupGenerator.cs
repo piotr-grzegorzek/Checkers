@@ -13,7 +13,7 @@ public class SceneSetupGenerator : MonoBehaviour
 
     void Start()
     {
-        Rules rules = RulesController.Instance.Get();
+        Rules rules = RulesController.Instance.Rules;
         _boardSize = rules.BoardSize;
         _rowsPerTeam = rules.RowsPerTeam;
         GenerateBoard();

@@ -13,7 +13,7 @@ public class Piece : MonoBehaviour
         set
         {
             _pieceColor = value;
-            Rules rules = RulesController.Instance.Get();
+            Rules rules = RulesController.Instance.Rules;
             _renderer.material.color = value == GameColor.Light ? Color.white : rules.DarkPieceColor;
         }
     }
@@ -84,7 +84,7 @@ public class Piece : MonoBehaviour
     }
     private bool IsWithinBoard(Vector3 position)
     {
-        Rules rules = RulesController.Instance.Get();
+        Rules rules = RulesController.Instance.Rules;
         return position.x >= 0 && position.x < rules.BoardSize && position.z >= 0 && position.z < rules.BoardSize;
     }
     private Piece GetPieceAtPosition(Vector3 position)
