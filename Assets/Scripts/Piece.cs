@@ -29,7 +29,16 @@ public class Piece : MonoBehaviour
         List<Vector3> availableMovements = new List<Vector3>();
 
         // Define the possible movement directions for a piece
-        List<Vector3> directions = new List<Vector3> { Vector3.forward + Vector3.right, Vector3.forward + Vector3.left};
+        List<Vector3> directions;
+        if (PieceColor == GameColor.Dark)
+        {
+            // The dark pieces move in the negative z direction
+            directions = new List<Vector3> { Vector3.back + Vector3.right, Vector3.back + Vector3.left };
+        }
+        else
+        {
+            directions = new List<Vector3> { Vector3.forward + Vector3.right, Vector3.forward + Vector3.left };
+        }
 
         foreach (var direction in directions)
         {
@@ -56,7 +65,6 @@ public class Piece : MonoBehaviour
                 }
                 else
                 {
-                    // If the next position is not occupied, it's a valid movement
                     availableMovements.Add(nextPosition);
                 }
             }
