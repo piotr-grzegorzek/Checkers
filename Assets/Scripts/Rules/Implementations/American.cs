@@ -6,4 +6,5 @@ internal class American : Rules
     internal override Color PlayableTileColor => Color.green;
     internal override int RowsPerTeam => 3;
     internal override Color DarkPieceColor => Color.red;
+    internal override GameColor StartingPieceColor => GameColor.Dark;
 }

@@ -6,4 +6,5 @@ internal abstract class Rules
     internal abstract Color PlayableTileColor { get; }
     internal abstract int RowsPerTeam { get; }
     internal abstract Color DarkPieceColor { get; }
+    internal abstract GameColor StartingPieceColor { get; }
 }
