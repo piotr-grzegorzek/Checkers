@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public GameColor TileColor
+    internal GameColor TileColor
     {
         get => _tileColor;
         set

@@ -3,15 +3,15 @@ using UnityEngine;
 public class RulesController : MonoBehaviour
 {
     // Singleton
-    public static RulesController Instance;
+    internal static RulesController Instance;
 
     private Rules _rules;
 
-    public Rules Get()
+    internal Rules Get()
     {
         return _rules;
     }
-    public void Set(Rules rules)
+    internal void Set(Rules rules)
     {
         _rules = rules;
     }

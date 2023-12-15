@@ -1,4 +1,4 @@
-public enum PieceType
+internal enum PieceType
 {
     Pawn,
     King

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class American : Rules
+internal class American : Rules
 {
-    public override int BoardSize => 8;
-    public override Color PlayableTileColor => Color.green;
-    public override int RowsPerTeam => 3;
-    public override Color DarkPieceColor => Color.red;
+    internal override int BoardSize => 8;
+    internal override Color PlayableTileColor => Color.green;
+    internal override int RowsPerTeam => 3;
+    internal override Color DarkPieceColor => Color.red;
 }

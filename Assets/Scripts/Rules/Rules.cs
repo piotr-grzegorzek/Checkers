@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public abstract class Rules
+internal abstract class Rules
 {
-    public abstract int BoardSize { get; }
-    public abstract Color PlayableTileColor { get; }
-    public abstract int RowsPerTeam { get; }
-    public abstract Color DarkPieceColor { get; }
+    internal abstract int BoardSize { get; }
+    internal abstract Color PlayableTileColor { get; }
+    internal abstract int RowsPerTeam { get; }
+    internal abstract Color DarkPieceColor { get; }
 }

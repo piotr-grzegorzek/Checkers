@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
-    public PieceType Type;
-    public GameColor PieceColor
+    internal PieceType Type;
+    internal GameColor PieceColor
     {
         get => _pieceColor;
         set

@@ -1,4 +1,4 @@
-public enum GameColor
+internal enum GameColor
 {
     Light,
     Dark

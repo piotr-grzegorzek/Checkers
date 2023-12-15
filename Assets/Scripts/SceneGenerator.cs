@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class SceneGenerator : MonoBehaviour
 {
-    public GameObject TilePrefab;
-    public GameObject PiecePrefab;
+    [SerializeField]
+    GameObject _tilePrefab;
+    [SerializeField]
+    GameObject _piecePrefab;
 
     private int _boardSize;
     private int _rowsPerTeam;
@@ -30,7 +32,7 @@ public class SceneGenerator : MonoBehaviour
     }
     private void GenerateTile(int x, int z)
     {
-        GameObject tile = Instantiate(TilePrefab, new Vector3(x, 0, z), Quaternion.identity);
+        GameObject tile = Instantiate(_tilePrefab, new Vector3(x, 0, z), Quaternion.identity);
         if ((x + z) % 2 == 0)
         {
             SetTileColor(tile, GameColor.Dark);
@@ -56,7 +58,7 @@ public class SceneGenerator : MonoBehaviour
     }
     private GameObject InstantiatePiece(int x, int z)
     {
-        return Instantiate(PiecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity);
+        return Instantiate(_piecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity);
     }
     private void SetPieceColor(GameObject piece, GameColor color)
     {
