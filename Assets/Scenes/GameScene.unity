@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 395952161}
   - component: {fileID: 395952160}
   m_Layer: 0
-  m_Name: SceneGenerator
+  m_Name: SceneSetupGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
