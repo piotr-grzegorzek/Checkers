@@ -14,7 +14,6 @@ public class InputController : MonoBehaviour
     private Piece _selectedPiece;
     private List<GameObject> _markers = new List<GameObject>();
 
-
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
