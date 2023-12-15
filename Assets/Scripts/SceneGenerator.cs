@@ -10,7 +10,7 @@ public class SceneGenerator : MonoBehaviour
     [SerializeField]
     GameObject _markerPrefab;
 
-    private List<GameObject> _markers = new List<GameObject>();
+    private List<GameObject> _markers;
     private int _boardSize;
     private int _rowsPerTeam;
     private const float _pieceUpOffset = 0.5f;
@@ -21,6 +21,7 @@ public class SceneGenerator : MonoBehaviour
         _boardSize = rules.BoardSize;
         _rowsPerTeam = rules.RowsPerTeam;
         GenerateBoard();
+        _markers = new List<GameObject>();
     }
 
     internal void MarkAvailablePositions(Piece piece)

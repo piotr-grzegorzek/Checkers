@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,7 +11,6 @@ public class InputController : MonoBehaviour
     SceneGenerator _sceneGenerator;
 
     private Piece _selectedPiece;
-    private List<GameObject> _markers = new List<GameObject>();
 
     void Update()
     {
