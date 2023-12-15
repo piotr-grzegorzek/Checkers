@@ -28,7 +28,6 @@ public class Piece : MonoBehaviour
 
     internal void MakeMovementMarkers()
     {
-        ClearMovementMarkers();
         // Define the possible movement directions for a piece
         List<Vector3> directions;
         if (PieceColor == GameColor.Dark)
@@ -75,13 +74,6 @@ public class Piece : MonoBehaviour
         }
     }
 
-    private void ClearMovementMarkers()
-    {
-        foreach (var marker in FindObjectsOfType<MovementMarker>())
-        {
-            Destroy(marker.gameObject);
-        }
-    }
     private bool IsWithinBoard(Vector3 position)
     {
         Rules rules = RulesController.Instance.Rules;
