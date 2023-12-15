@@ -13,17 +13,19 @@ public class InputController : MonoBehaviour
         {
             // Mouse clicked
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 1000, _pieceMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, 100, _pieceMask))
             {
                 // Piece clicked
-                ClearMovementMarkers();
+                MovementMarkersController mmc = MovementMarkersController.Instance;
+                mmc.ClearMovementMarkers();
                 Piece piece = hit.collider.GetComponent<Piece>();
-                piece.MakeMovementMarkers();
+                mmc.MakeMovementMarkers(piece);
             }
-            else if (Physics.Raycast(ray, out RaycastHit hit2, 1000, _movementMarkerMask))
+            else if (Physics.Raycast(ray, out RaycastHit hit2, 100, _movementMarkerMask))
             {
                 // Movement marker clicked
-                ClearMovementMarkers();
+                MovementMarkersController mmc = MovementMarkersController.Instance;
+                mmc.ClearMovementMarkers();
                 MovementMarker marker = hit2.collider.GetComponent<MovementMarker>();
                 marker.SourcePiece.transform.position = marker.transform.position;
                 foreach (var piece in marker.CapturablePieces)
@@ -31,14 +33,6 @@ public class InputController : MonoBehaviour
                     Destroy(piece.gameObject);
                 }
             }
-        }
-    }
-
-    private void ClearMovementMarkers()
-    {
-        foreach (var marker in FindObjectsOfType<MovementMarker>())
-        {
-            Destroy(marker.gameObject);
         }
     }
 }
