@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class RulesController : MonoBehaviour
 {
-    // Singleton
     internal Rules Rules;
     internal static RulesController Instance { get; private set; }
 
