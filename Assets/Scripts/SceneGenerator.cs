@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SceneGenerator : MonoBehaviour
@@ -6,6 +7,8 @@ public class SceneGenerator : MonoBehaviour
     GameObject _tilePrefab;
     [SerializeField]
     GameObject _piecePrefab;
+    [SerializeField]
+    GameObject _markerPrefab;
 
     private int _boardSize;
     private int _rowsPerTeam;
@@ -17,7 +20,17 @@ public class SceneGenerator : MonoBehaviour
         _boardSize = rules.BoardSize;
         _rowsPerTeam = rules.RowsPerTeam;
         GenerateBoard();
-        Destroy(gameObject);
+    }
+
+    internal List<GameObject> MarkAvailablePositions(Piece piece)
+    {
+        List<GameObject> markers = new List<GameObject>();
+        foreach (var position in piece.AvailableMovements)
+        {
+            GameObject marker = Instantiate(_markerPrefab, position, Quaternion.identity);
+            markers.Add(marker);
+        }
+        return markers;
     }
 
     private void GenerateBoard()
