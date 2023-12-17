@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class SceneSetupGenerator : MonoBehaviour
+public class SingleSceneSetupGenerator : MonoBehaviour
 {
+    private static SingleSceneSetupGenerator _instance;
+
     [SerializeField]
     GameObject _tilePrefab;
     [SerializeField]
@@ -15,6 +17,17 @@ public class SceneSetupGenerator : MonoBehaviour
     private int _rowsPerTeam;
     private const float _pieceUpOffset = 0.5f;
 
+    void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         //TEMP
@@ -30,7 +43,6 @@ public class SceneSetupGenerator : MonoBehaviour
         _boardSize = rules.BoardSize;
         _rowsPerTeam = rules.RowsPerTeam;
         GenerateBoard();
-        Destroy(gameObject);
     }
 
     private void GenerateBoard()

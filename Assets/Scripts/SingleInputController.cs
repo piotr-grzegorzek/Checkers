@@ -1,12 +1,25 @@
 using UnityEngine;
 
-public class InputController : MonoBehaviour
+public class SingleInputController : MonoBehaviour
 {
+    private static SingleInputController _instance;
+
     [SerializeField]
     LayerMask _pieceMask;
     [SerializeField]
     LayerMask _movementMarkerMask;
 
+    void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Update()
     {
         if (Input.GetMouseButtonDown(0))

@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 395952161}
   - component: {fileID: 395952160}
   m_Layer: 0
-  m_Name: SceneSetupGenerator
+  m_Name: SingleSceneSetupGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 451320094}
   - component: {fileID: 451320093}
   m_Layer: 0
-  m_Name: InputController
+  m_Name: SingleInputController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -630,8 +630,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 963194228}
   - {fileID: 705507995}
-  - {fileID: 395952161}
   - {fileID: 451320094}
   - {fileID: 459762498}
   - {fileID: 1147758343}
+  - {fileID: 395952161}
   - {fileID: 789388401}

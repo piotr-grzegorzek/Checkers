@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class SingleMovementMarkersController : MonoBehaviour
 {
+    internal static SingleMovementMarkersController Instance { get; private set; }
+
     [SerializeField]
     GameObject _movementMarkerPrefab;
     [SerializeField]
     GameObject _movementMarkersGameObject;
-
-    internal static SingleMovementMarkersController Instance { get; private set; }
 
     void Awake()
     {
