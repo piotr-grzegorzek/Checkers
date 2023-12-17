@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovementMarkersController : MonoBehaviour
+public class SingleMovementMarkersController : MonoBehaviour
 {
     [SerializeField]
     GameObject _movementMarkerPrefab;
 
-    internal static MovementMarkersController Instance { get; private set; }
+    internal static SingleMovementMarkersController Instance { get; private set; }
 
     void Awake()
     {
@@ -77,7 +77,7 @@ public class MovementMarkersController : MonoBehaviour
 
     private bool IsWithinBoard(Vector3 position)
     {
-        Rules rules = RulesController.Instance.Rules;
+        RulesStrategy rules = SingleRulesStrategyController.Instance.Rules;
         return position.x >= 0 && position.x < rules.BoardSize && position.z >= 0 && position.z < rules.BoardSize;
     }
     private Piece GetPieceAtPosition(Vector3 position)

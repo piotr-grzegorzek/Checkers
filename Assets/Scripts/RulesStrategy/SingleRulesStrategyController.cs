@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class RulesController : MonoBehaviour
+public class SingleRulesStrategyController : MonoBehaviour
 {
-    internal static RulesController Instance { get; private set; }
-    internal Rules Rules { get; set; }
+    internal static SingleRulesStrategyController Instance { get; private set; }
+    internal RulesStrategy Rules { get; set; }
 
     void Awake()
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-internal class Custom : Rules
+internal class CustomStrategy : RulesStrategy
 {
     internal override int BoardSize { get; }
     internal override Color PlayableTileColor { get; }
@@ -8,7 +8,7 @@ internal class Custom : Rules
     internal override Color DarkPieceColor { get; }
     internal override GameColor StartingPieceColor { get; }
 
-    internal Custom(int boardSize, Color playableTileColor, int rowsPerTeam, Color darkPieceColor, GameColor startingPieceColor)
+    internal CustomStrategy(int boardSize, Color playableTileColor, int rowsPerTeam, Color darkPieceColor, GameColor startingPieceColor)
     {
         BoardSize = boardSize;
         PlayableTileColor = playableTileColor;

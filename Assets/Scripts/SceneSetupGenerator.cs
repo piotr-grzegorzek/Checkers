@@ -14,7 +14,7 @@ public class SceneSetupGenerator : MonoBehaviour
     void Start()
     {
         //TEMP
-        RulesController.Instance.Rules = new Custom(
+        SingleRulesStrategyController.Instance.Rules = new CustomStrategy(
             boardSize: 8,
             playableTileColor: Color.blue,
             rowsPerTeam: 3,
@@ -22,7 +22,7 @@ public class SceneSetupGenerator : MonoBehaviour
             startingPieceColor: GameColor.Light
         );
         //
-        Rules rules = RulesController.Instance.Rules;
+        RulesStrategy rules = SingleRulesStrategyController.Instance.Rules;
         _boardSize = rules.BoardSize;
         _rowsPerTeam = rules.RowsPerTeam;
         GenerateBoard();

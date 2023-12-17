@@ -16,7 +16,7 @@ public class InputController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 100, _pieceMask))
             {
                 // Piece clicked
-                MovementMarkersController mmc = MovementMarkersController.Instance;
+                SingleMovementMarkersController mmc = SingleMovementMarkersController.Instance;
                 mmc.ClearMovementMarkers();
                 Piece piece = hit.collider.GetComponent<Piece>();
                 mmc.MakeMovementMarkers(piece);
@@ -24,7 +24,7 @@ public class InputController : MonoBehaviour
             else if (Physics.Raycast(ray, out RaycastHit hit2, 100, _movementMarkerMask))
             {
                 // Movement marker clicked
-                MovementMarkersController mmc = MovementMarkersController.Instance;
+                SingleMovementMarkersController mmc = SingleMovementMarkersController.Instance;
                 mmc.ClearMovementMarkers();
                 MovementMarker marker = hit2.collider.GetComponent<MovementMarker>();
                 marker.SourcePiece.transform.position = marker.transform.position;
