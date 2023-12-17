@@ -5,6 +5,8 @@ public class SingleMovementMarkersController : MonoBehaviour
 {
     [SerializeField]
     GameObject _movementMarkerPrefab;
+    [SerializeField]
+    GameObject _movementMarkersGameObject;
 
     internal static SingleMovementMarkersController Instance { get; private set; }
 
@@ -50,7 +52,7 @@ public class SingleMovementMarkersController : MonoBehaviour
 
                         if (IsWithinBoard(capturePosition) && GetPieceAtPosition(capturePosition) == null)
                         {
-                            GameObject marker = Instantiate(_movementMarkerPrefab, capturePosition, Quaternion.identity);
+                            GameObject marker = Instantiate(_movementMarkerPrefab, capturePosition, Quaternion.identity, _movementMarkersGameObject.transform);
                             MovementMarker markerScript = marker.GetComponent<MovementMarker>();
                             markerScript.SourcePiece = piece;
                             markerScript.CapturablePieces = new List<Piece> { otherPiece };
@@ -59,7 +61,7 @@ public class SingleMovementMarkersController : MonoBehaviour
                 }
                 else
                 {
-                    GameObject marker = Instantiate(_movementMarkerPrefab, nextPosition, Quaternion.identity);
+                    GameObject marker = Instantiate(_movementMarkerPrefab, nextPosition, Quaternion.identity, _movementMarkersGameObject.transform);
                     MovementMarker markerScript = marker.GetComponent<MovementMarker>();
                     markerScript.SourcePiece = piece;
                     markerScript.CapturablePieces = new List<Piece>();

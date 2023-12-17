@@ -6,6 +6,10 @@ public class SceneSetupGenerator : MonoBehaviour
     GameObject _tilePrefab;
     [SerializeField]
     GameObject _piecePrefab;
+    [SerializeField]
+    GameObject _tilesGameObject;
+    [SerializeField]
+    GameObject _piecesGameObject;
 
     private int _boardSize;
     private int _rowsPerTeam;
@@ -41,7 +45,7 @@ public class SceneSetupGenerator : MonoBehaviour
     }
     private void GenerateTile(int x, int z)
     {
-        GameObject tile = Instantiate(_tilePrefab, new Vector3(x, 0, z), Quaternion.identity);
+        GameObject tile = Instantiate(_tilePrefab, new Vector3(x, 0, z), Quaternion.identity, _tilesGameObject.transform);
         if ((x + z) % 2 == 0)
         {
             SetTileColor(tile, GameColor.Dark);
@@ -67,7 +71,7 @@ public class SceneSetupGenerator : MonoBehaviour
     }
     private GameObject InstantiatePiece(int x, int z)
     {
-        return Instantiate(_piecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity);
+        return Instantiate(_piecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity, _piecesGameObject.transform);
     }
     private void SetPieceColor(GameObject piece, GameColor color)
     {
