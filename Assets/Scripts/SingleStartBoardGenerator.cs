@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class SingleSceneSetupGenerator : MonoBehaviour
+public class SingleStartBoardGenerator : MonoBehaviour
 {
-    private static SingleSceneSetupGenerator _instance;
+    private static SingleStartBoardGenerator _instance;
 
     [SerializeField]
     GameObject _tilePrefab;
