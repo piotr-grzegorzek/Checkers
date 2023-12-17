@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 459762498}
   - component: {fileID: 459762497}
   m_Layer: 0
-  m_Name: RulesController
+  m_Name: SingleRulesController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 1147758343}
   - component: {fileID: 1147758342}
   m_Layer: 0
-  m_Name: MovementMarkersController
+  m_Name: SingleMovementMarkersController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
