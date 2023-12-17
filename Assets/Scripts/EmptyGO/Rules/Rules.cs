@@ -2,6 +2,7 @@ using UnityEngine;
 
 internal abstract class Rules
 {
+    // Strategy pattern
     internal abstract int BoardSize { get; }
     internal abstract Color PlayableTileColor { get; }
     internal abstract int RowsPerTeam { get; }

@@ -14,7 +14,13 @@ public class SceneSetupGenerator : MonoBehaviour
     void Start()
     {
         //TEMP
-        RulesController.Instance.Rules = new Brazilian();
+        RulesController.Instance.Rules = new Custom(
+            boardSize: 8,
+            playableTileColor: Color.blue,
+            rowsPerTeam: 3,
+            darkPieceColor: Color.black,
+            startingPieceColor: GameColor.Light
+        );
         //
         Rules rules = RulesController.Instance.Rules;
         _boardSize = rules.BoardSize;
