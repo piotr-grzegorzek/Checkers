@@ -13,6 +13,9 @@ public class SceneSetupGenerator : MonoBehaviour
 
     void Start()
     {
+        //TEMP
+        RulesController.Instance.Rules = new Brazilian();
+        //
         Rules rules = RulesController.Instance.Rules;
         _boardSize = rules.BoardSize;
         _rowsPerTeam = rules.RowsPerTeam;
