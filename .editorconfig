@@ -16,6 +16,9 @@ dotnet_diagnostic.UNT0024.severity = warning
 #UNT0026
 dotnet_diagnostic.UNT0026.severity = warning
 
+#IDE0066
+dotnet_diagnostic.IDE0066.severity = warning
+
 # IDE0005: Using directive is unnecessary
 dotnet_diagnostic.IDE0005.severity = warning
 
