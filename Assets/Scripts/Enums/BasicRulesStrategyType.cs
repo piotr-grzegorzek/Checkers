@@ -1,4 +1,4 @@
-internal enum RulesStrategyType
+internal enum BasicRulesStrategyType
 {
     American,
     Brazilian,
