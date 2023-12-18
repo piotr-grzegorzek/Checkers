@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SingleStartBoardGenerator : MonoBehaviour
@@ -38,6 +39,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
             darkPieceColor: Color.black,
             startingPieceColor: GameColor.Light
         );
+        SingleRulesContext.Instance.Rules = BasicRulesStrategyFactory.Create(RulesStrategyType.American);
         //
         RulesStrategy rules = SingleRulesContext.Instance.Rules;
         _boardSize = rules.BoardSize;

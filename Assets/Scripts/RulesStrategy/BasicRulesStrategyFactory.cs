@@ -1,12 +1,12 @@
 internal class BasicRulesStrategyFactory
 {
-    internal static RulesStrategy Create(string strategyType)
+    internal static RulesStrategy Create(RulesStrategyType strategyType)
     {
         return strategyType switch
         {
-            "American" => new AmericanRulesStrategy(),
-            "Brazilian" => new BrazilianRulesStrategy(),
-            "International" => new InternationalRulesStrategy(),
+            RulesStrategyType.American => new AmericanRulesStrategy(),
+            RulesStrategyType.Brazilian => new BrazilianRulesStrategy(),
+            RulesStrategyType.International => new InternationalRulesStrategy(),
             _ => throw new System.ArgumentException($"Invalid strategy type: {strategyType}"),
         };
     }
