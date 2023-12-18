@@ -39,7 +39,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
             darkPieceColor: Color.black,
             startingPieceColor: GameColor.Light
         );
-        SingleRulesContext.Instance.Rules = BasicRulesStrategyFactory.Create(BasicRulesStrategyType.American);
+        SingleRulesContext.Instance.Rules = BaseRulesStrategyFactory.Create(BaseRulesStrategyType.American);
         //
         RulesStrategy rules = SingleRulesContext.Instance.Rules;
         _boardSize = rules.BoardSize;
