@@ -1,6 +1,6 @@
 using UnityEngine;
 
-internal class AmericanStrategy : RulesStrategy
+internal class AmericanRulesStrategy : RulesStrategy
 {
     internal override int BoardSize => 8;
     internal override Color PlayableTileColor => Color.green;

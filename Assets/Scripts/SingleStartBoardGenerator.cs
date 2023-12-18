@@ -31,7 +31,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
     void Start()
     {
         //TEMP
-        SingleRulesStrategyController.Instance.Rules = new CustomStrategy(
+        SingleRulesContext.Instance.Rules = new CustomRulesStrategy(
             boardSize: 8,
             playableTileColor: Color.blue,
             rowsPerTeam: 3,
@@ -39,7 +39,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
             startingPieceColor: GameColor.Light
         );
         //
-        RulesStrategy rules = SingleRulesStrategyController.Instance.Rules;
+        RulesStrategy rules = SingleRulesContext.Instance.Rules;
         _boardSize = rules.BoardSize;
         _rowsPerTeam = rules.RowsPerTeam;
         GenerateBoard();

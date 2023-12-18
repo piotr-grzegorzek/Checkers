@@ -79,7 +79,7 @@ public class SingleMovementMarkersController : MonoBehaviour
 
     private bool IsWithinBoard(Vector3 position)
     {
-        RulesStrategy rules = SingleRulesStrategyController.Instance.Rules;
+        RulesStrategy rules = SingleRulesContext.Instance.Rules;
         return position.x >= 0 && position.x < rules.BoardSize && position.z >= 0 && position.z < rules.BoardSize;
     }
     private Piece GetPieceAtPosition(Vector3 position)
