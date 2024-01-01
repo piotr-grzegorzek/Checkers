@@ -6,8 +6,6 @@ public class SingleInputController : MonoBehaviour
 
     [SerializeField]
     LayerMask _pieceMask;
-    [SerializeField]
-    LayerMask _movementMarkerMask;
 
     void Awake()
     {
@@ -29,22 +27,8 @@ public class SingleInputController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 100, _pieceMask))
             {
                 // Piece clicked
-                SingleMovementMarkersController mmc = SingleMovementMarkersController.Instance;
-                mmc.ClearMovementMarkers();
                 Piece piece = hit.collider.GetComponent<Piece>();
-                mmc.MakeMovementMarkers(piece);
-            }
-            else if (Physics.Raycast(ray, out RaycastHit hit2, 100, _movementMarkerMask))
-            {
-                // Movement marker clicked
-                SingleMovementMarkersController mmc = SingleMovementMarkersController.Instance;
-                mmc.ClearMovementMarkers();
-                MovementMarker marker = hit2.collider.GetComponent<MovementMarker>();
-                marker.SourcePiece.transform.position = marker.transform.position;
-                foreach (var piece in marker.CapturablePieces)
-                {
-                    Destroy(piece.gameObject);
-                }
+                Debug.Log($"Piece clicked: {piece.Type} {piece.PieceColor}");
             }
         }
     }

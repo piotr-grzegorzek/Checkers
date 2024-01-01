@@ -203,9 +203,6 @@ MonoBehaviour:
   _pieceMask:
     serializedVersion: 2
     m_Bits: 64
-  _movementMarkerMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!4 &451320094
 Transform:
   m_ObjectHideFlags: 0
@@ -390,7 +387,6 @@ Transform:
   m_Children:
   - {fileID: 2011246957}
   - {fileID: 884632426}
-  - {fileID: 1499675596}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &884632425
@@ -516,83 +512,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
---- !u!1 &1147758341
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1147758343}
-  - component: {fileID: 1147758342}
-  m_Layer: 0
-  m_Name: SingleMovementMarkersController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1147758342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1147758341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 758b193443264b54ea0370b0b4a922f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _movementMarkerPrefab: {fileID: 1238186707963280847, guid: 0fb04c9aa37b6ba458b1fb069e95b138, type: 3}
-  _movementMarkersGameObject: {fileID: 1499675595}
---- !u!4 &1147758343
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1147758341}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.713968, y: -6.451646, z: -4.4617553}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1499675595
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1499675596}
-  m_Layer: 0
-  m_Name: MovementMarkers
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1499675596
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1499675595}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 789388401}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2011246956
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,6 +551,5 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 459762498}
   - {fileID: 451320094}
-  - {fileID: 1147758343}
   - {fileID: 395952161}
   - {fileID: 789388401}
