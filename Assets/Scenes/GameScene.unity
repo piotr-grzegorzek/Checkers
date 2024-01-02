@@ -203,6 +203,9 @@ MonoBehaviour:
   _pieceMask:
     serializedVersion: 2
     m_Bits: 64
+  _tileMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!4 &451320094
 Transform:
   m_ObjectHideFlags: 0

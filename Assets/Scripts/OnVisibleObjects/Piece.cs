@@ -21,4 +21,9 @@ public class Piece : MonoBehaviour
     {
         _renderer = GetComponent<Renderer>();
     }
+
+    internal void MoveTo(Tile tile)
+    {
+        transform.position = new Vector3(tile.transform.position.x, transform.position.y, tile.transform.position.z);
+    }
 }

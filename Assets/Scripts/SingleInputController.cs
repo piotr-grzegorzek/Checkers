@@ -6,6 +6,10 @@ public class SingleInputController : MonoBehaviour
 
     [SerializeField]
     LayerMask _pieceMask;
+    [SerializeField]
+    LayerMask _tileMask;
+
+    private Piece _selectedPiece;
 
     void Awake()
     {
@@ -23,12 +27,34 @@ public class SingleInputController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             // Mouse clicked
+            TrySelectingPiece();
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            // Mouse released
+            TryMovingPiece();
+        }
+    }
+
+    private void TrySelectingPiece()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 25f, _pieceMask))
+        {
+            _selectedPiece = hit.collider.GetComponent<Piece>();
+        }
+    }
+
+    private void TryMovingPiece()
+    {
+        if (_selectedPiece != null)
+        {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 100, _pieceMask))
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 25f, _tileMask))
             {
-                // Piece clicked
-                Piece piece = hit.collider.GetComponent<Piece>();
-                Debug.Log($"Piece clicked: {piece.Type} {piece.PieceColor}");
+                _selectedPiece.MoveTo(hit.collider.GetComponent<Tile>());
             }
         }
     }
