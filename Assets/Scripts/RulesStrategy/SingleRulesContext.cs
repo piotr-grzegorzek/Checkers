@@ -4,7 +4,7 @@ public class SingleRulesContext : MonoBehaviour
 {
     internal static SingleRulesContext Instance { get; private set; }
 
-    // //Injecting the rules strategy
+    // Injecting the rules strategy
     internal RulesStrategy Rules
     {
         get => _rules;

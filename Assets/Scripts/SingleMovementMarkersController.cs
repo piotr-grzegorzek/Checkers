@@ -25,8 +25,11 @@ public class SingleMovementMarkersController : MonoBehaviour
 
     internal void MakeMovementMarkers(Piece piece)
     {
+        ClearMovementMarkers();
+
+        // Get available tiles
         Tile[] tiles = FindObjectsOfType<Tile>();
-        IEnumerable<Tile> filtered = tiles.Where(tile =>
+        IEnumerable<Tile> availableTiles = tiles.Where(tile =>
         {
             // Calculate the difference in row and column between the piece and the tile
             int rowDiff = (int)Mathf.Abs(tile.transform.position.x - piece.transform.position.x);
@@ -36,8 +39,9 @@ public class SingleMovementMarkersController : MonoBehaviour
             return rowDiff == colDiff;
         });
 
+        // Create markers on available tiles
         Vector3 offset = new Vector3(0, 0.5f, 0);
-        foreach (var tile in filtered)
+        foreach (var tile in availableTiles)
         {
             Vector3 newMarkerPosition = tile.transform.position + offset;
             GameObject marker = Instantiate(_movementMarkerPrefab, newMarkerPosition, Quaternion.identity, _movementMarkersGameObject.transform);
@@ -46,8 +50,22 @@ public class SingleMovementMarkersController : MonoBehaviour
             markerScript.CapturablePieces = new List<Piece>();
         }
     }
+    internal void CommitMovementMarker(MovementMarker marker)
+    {
+        // Move the piece to the marker
+        Piece piece = marker.SourcePiece;
+        piece.transform.position = marker.transform.position;
 
-    internal void ClearMovementMarkers()
+        // Capture the pieces
+        foreach (var capturablePiece in marker.CapturablePieces)
+        {
+            Destroy(capturablePiece.gameObject);
+        }
+
+        ClearMovementMarkers();
+    }
+
+    private void ClearMovementMarkers()
     {
         foreach (var marker in FindObjectsOfType<MovementMarker>())
         {
