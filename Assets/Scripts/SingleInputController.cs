@@ -9,6 +9,8 @@ public class SingleInputController : MonoBehaviour
     [SerializeField]
     LayerMask _movementMarkerMask;
 
+    private GameColor _currentPlayerColor;
+
     void Awake()
     {
         if (_instance == null)
@@ -30,8 +32,12 @@ public class SingleInputController : MonoBehaviour
             {
                 // Piece clicked
                 Piece piece = hit.collider.GetComponent<Piece>();
-                SingleMovementMarkersController mmc = SingleMovementMarkersController.Instance;
-                mmc.MakeMovementMarkers(piece);
+                // Check if it's the current player's piece
+                if (piece.PieceColor == _currentPlayerColor)
+                {
+                    SingleMovementMarkersController mmc = SingleMovementMarkersController.Instance;
+                    mmc.MakeMovementMarkers(piece);
+                }
             }
             else if (Physics.Raycast(ray, out RaycastHit hit2, 100, _movementMarkerMask))
             {
@@ -39,6 +45,10 @@ public class SingleInputController : MonoBehaviour
                 MovementMarker marker = hit2.collider.GetComponent<MovementMarker>();
                 SingleMovementMarkersController mmc = SingleMovementMarkersController.Instance;
                 mmc.CommitMovementMarker(marker);
+                // End turn
+                _currentPlayerColor = _currentPlayerColor == GameColor.Light ? GameColor.Dark : GameColor.Light;
+                Debug.Log($"Player {_currentPlayerColor} turn");
+                // Check victory
             }
         }
     }
