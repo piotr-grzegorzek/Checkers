@@ -30,14 +30,41 @@ public class SingleMovementMarkersController : MonoBehaviour
         // Get all tiles
         Tile[] tiles = FindObjectsOfType<Tile>();
 
-        // Create markers
+        // Create a list to store all potential captures
+        List<Tile> captureTiles = new List<Tile>();
+
+        // Check all tiles for potential captures
         foreach (var tile in tiles)
         {
             List<Piece> capturablePieces = new List<Piece>();
 
-            if (PrepareMovementMarker(tile, piece, tiles, capturablePieces))
+            if (PrepareMovementMarker(tile, piece, tiles, capturablePieces) && capturablePieces.Count > 0)
             {
+                captureTiles.Add(tile);
+            }
+        }
+
+        // If there are potential captures, only create markers for those
+        if (captureTiles.Count > 0)
+        {
+            foreach (var tile in captureTiles)
+            {
+                List<Piece> capturablePieces = new List<Piece>();
+                PrepareMovementMarker(tile, piece, tiles, capturablePieces);
                 InstantiateMovementMarker(tile, piece, capturablePieces);
+            }
+        }
+        // If there are no potential captures, create markers as usual
+        else
+        {
+            foreach (var tile in tiles)
+            {
+                List<Piece> capturablePieces = new List<Piece>();
+
+                if (PrepareMovementMarker(tile, piece, tiles, capturablePieces))
+                {
+                    InstantiateMovementMarker(tile, piece, capturablePieces);
+                }
             }
         }
     }
