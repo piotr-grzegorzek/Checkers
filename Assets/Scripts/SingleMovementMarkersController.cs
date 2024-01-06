@@ -27,44 +27,44 @@ public class SingleMovementMarkersController : MonoBehaviour
     {
         ClearMovementMarkers();
 
-        // Get all tiles
-        Tile[] tiles = FindObjectsOfType<Tile>();
+        // Get pieces from the current player
+        IEnumerable<Piece> currentPlayerPieces = FindObjectsOfType<Piece>().Where(p => p.PieceColor == piece.PieceColor);
+        //Get dark tiles
+        IEnumerable<Tile> darkTiles = FindObjectsOfType<Tile>().Where(t => t.TileColor == GameColor.Dark);
 
-        // Create a list to store all potential captures
-        List<Tile> captureTiles = new List<Tile>();
-
-        // Check all tiles for potential captures
-        foreach (var tile in tiles)
+        // Prepare movement markers
+        List<PreparedMovementMarker> preparedMovementMarkers = new List<PreparedMovementMarker>();
+        foreach (var currentPlayerPiece in currentPlayerPieces)
         {
-            List<Piece> capturablePieces = new List<Piece>();
-
-            if (PrepareMovementMarker(tile, piece, tiles, capturablePieces) && capturablePieces.Count > 0)
-            {
-                captureTiles.Add(tile);
-            }
-        }
-
-        // If there are potential captures, only create markers for those
-        if (captureTiles.Count > 0)
-        {
-            foreach (var tile in captureTiles)
+            foreach (var darkTile in darkTiles)
             {
                 List<Piece> capturablePieces = new List<Piece>();
-                PrepareMovementMarker(tile, piece, tiles, capturablePieces);
-                InstantiateMovementMarker(tile, piece, capturablePieces);
+                if (PrepareMovementMarker(darkTile, currentPlayerPiece, darkTiles, capturablePieces))
+                {
+                    preparedMovementMarkers.Add(new PreparedMovementMarker
+                    {
+                        Tile = darkTile,
+                        Piece = currentPlayerPiece,
+                        CapturablePieces = capturablePieces
+                    });
+                }
             }
         }
-        // If there are no potential captures, create markers as usual
+
+        if (preparedMovementMarkers.Any(m => m.CapturablePieces.Count > 0))
+        {
+            // Instantiate movement markers with capturable pieces > 0 and Piece = piece only
+            foreach (var preparedMovementMarker in preparedMovementMarkers.Where(m => m.CapturablePieces.Count > 0 && m.Piece == piece))
+            {
+                InstantiateMovementMarker(preparedMovementMarker.Tile, preparedMovementMarker.Piece, preparedMovementMarker.CapturablePieces);
+            }
+        }
         else
         {
-            foreach (var tile in tiles)
+            // Instantiate movement markers with Piece = piece only
+            foreach (var preparedMovementMarker in preparedMovementMarkers.Where(m => m.Piece == piece))
             {
-                List<Piece> capturablePieces = new List<Piece>();
-
-                if (PrepareMovementMarker(tile, piece, tiles, capturablePieces))
-                {
-                    InstantiateMovementMarker(tile, piece, capturablePieces);
-                }
+                InstantiateMovementMarker(preparedMovementMarker.Tile, preparedMovementMarker.Piece, preparedMovementMarker.CapturablePieces);
             }
         }
     }
@@ -90,7 +90,7 @@ public class SingleMovementMarkersController : MonoBehaviour
             Destroy(marker.gameObject);
         }
     }
-    private bool PrepareMovementMarker(Tile tile, Piece piece, Tile[] tiles, List<Piece> capturablePieces)
+    private bool PrepareMovementMarker(Tile tile, Piece piece, IEnumerable<Tile> darkTiles, List<Piece> capturablePieces)
     {
         // Allow only empty tiles
         bool isOccupied = Physics.OverlapSphere(tile.transform.position, 0.1f).Any(collider => collider.TryGetComponent<Piece>(out Piece _));
@@ -112,7 +112,7 @@ public class SingleMovementMarkersController : MonoBehaviour
             // Jumping over a piece
             // Get the middle tile
             Vector3 middlePoint = Vector3.Lerp(piece.transform.position, tile.transform.position, 0.5f);
-            Tile middleTile = tiles.FirstOrDefault(t => (int)t.transform.position.x == (int)middlePoint.x && (int)t.transform.position.z == (int)middlePoint.z);
+            Tile middleTile = darkTiles.FirstOrDefault(t => (int)t.transform.position.x == (int)middlePoint.x && (int)t.transform.position.z == (int)middlePoint.z);
             if (middleTile != null)
             {
                 // Check if the middle tile is occupied by an enemy piece
