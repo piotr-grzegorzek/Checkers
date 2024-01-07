@@ -93,8 +93,7 @@ public class SingleMovementMarkersController : MonoBehaviour
     private bool PrepareMovementMarker(Tile tile, Piece piece, IEnumerable<Tile> darkTiles, List<Piece> capturablePieces)
     {
         // Allow only empty tiles
-        bool isOccupied = Physics.OverlapSphere(tile.transform.position, 0.1f)
-            .Any(collider => collider.TryGetComponent<Piece>(out Piece _));
+        bool isOccupied = GetPieceFromCollider(Physics.OverlapSphere(tile.transform.position, 0.1f)) != null;
         if (isOccupied)
         {
             return false;
