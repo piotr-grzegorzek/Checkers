@@ -40,55 +40,40 @@ public class SingleStartBoardGenerator : MonoBehaviour
         );
         SingleRulesContext.Instance.Rules = BaseRulesStrategyFactory.Create(BaseRulesStrategyType.Brazilian);
         //
+        // Get rules
         RulesStrategy rules = SingleRulesContext.Instance.Rules;
         _boardSize = rules.BoardSize;
         _rowsPerTeam = rules.RowsPerTeam;
-        GenerateBoard();
-    }
 
-    private void GenerateBoard()
-    {
+        // Generate tiles and pieces
         for (int x = 0; x < _boardSize; x++)
         {
             for (int z = 0; z < _boardSize; z++)
             {
-                GenerateTile(x, z);
+                // Instantiate tiles
+                Tile tile = Instantiate(_tilePrefab, new Vector3(x, 0, z), Quaternion.identity, _tilesGameObject.transform).GetComponent<Tile>();
+                if ((x + z) % 2 == 0)
+                {
+                    // Dark tiles
+                    tile.TileColor = GameColor.Dark;
+                    if (z < _rowsPerTeam)
+                    {
+                        // Instantiate light pieces
+                        InstantiatePiece(x, z);
+                    }
+                    else if (z >= _boardSize - _rowsPerTeam)
+                    {
+                        // Instantiate dark pieces
+                        Piece piece = InstantiatePiece(x, z);
+                        piece.PieceColor = GameColor.Dark;
+                    }
+                }
             }
         }
     }
-    private void GenerateTile(int x, int z)
+
+    private Piece InstantiatePiece(int x, int z)
     {
-        GameObject tile = Instantiate(_tilePrefab, new Vector3(x, 0, z), Quaternion.identity, _tilesGameObject.transform);
-        if ((x + z) % 2 == 0)
-        {
-            SetTileColor(tile, GameColor.Dark);
-            InstantiatePieceIfNeeded(x, z);
-        }
-    }
-    private void SetTileColor(GameObject tile, GameColor color)
-    {
-        Tile tileScript = tile.GetComponent<Tile>();
-        tileScript.TileColor = color;
-    }
-    private void InstantiatePieceIfNeeded(int x, int z)
-    {
-        if (z < _rowsPerTeam)
-        {
-            InstantiatePiece(x, z);
-        }
-        else if (z >= _boardSize - _rowsPerTeam)
-        {
-            GameObject piece = InstantiatePiece(x, z);
-            SetPieceColor(piece, GameColor.Dark);
-        }
-    }
-    private GameObject InstantiatePiece(int x, int z)
-    {
-        return Instantiate(_piecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity, _piecesGameObject.transform);
-    }
-    private void SetPieceColor(GameObject piece, GameColor color)
-    {
-        Piece pieceScript = piece.GetComponent<Piece>();
-        pieceScript.PieceColor = color;
+        return Instantiate(_piecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity, _piecesGameObject.transform).GetComponent<Piece>();
     }
 }
