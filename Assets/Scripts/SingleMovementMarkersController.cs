@@ -98,7 +98,7 @@ public class SingleMovementMarkersController : MonoBehaviour
         {
             return false;
         }
-
+        
         // Get the distance between the piece and the tile
         float distance = Vector3.Distance(
             new Vector3(piece.transform.position.x, 0, piece.transform.position.z),
