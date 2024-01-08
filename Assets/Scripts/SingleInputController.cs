@@ -7,9 +7,9 @@ public class SingleInputController : MonoBehaviour
     [SerializeField]
     LayerMask _pieceMask;
     [SerializeField]
-    LayerMask _tileMask;
+    LayerMask _movementMarkerMask;
 
-    private Piece _selectedPiece;
+    private GameColor _currentPlayerColor;
 
     void Awake()
     {
@@ -27,34 +27,28 @@ public class SingleInputController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             // Mouse clicked
-            TrySelectingPiece();
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            // Mouse released
-            TryMovingPiece();
-        }
-    }
-
-    private void TrySelectingPiece()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, 25f, _pieceMask))
-        {
-            _selectedPiece = hit.collider.GetComponent<Piece>();
-        }
-    }
-
-    private void TryMovingPiece()
-    {
-        if (_selectedPiece != null)
-        {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, 25f, _tileMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, 100, _pieceMask))
             {
-                _selectedPiece.MoveTo(hit.collider.GetComponent<Tile>());
+                // Piece clicked
+                Piece piece = hit.collider.GetComponent<Piece>();
+                // Check if it's the current player's piece
+                if (piece.PieceColor == _currentPlayerColor)
+                {
+                    SingleMovementMarkersController mmc = SingleMovementMarkersController.Instance;
+                    mmc.MakeMovementMarkers(piece);
+                }
+            }
+            else if (Physics.Raycast(ray, out RaycastHit hit2, 100, _movementMarkerMask))
+            {
+                // Marker clicked
+                MovementMarker marker = hit2.collider.GetComponent<MovementMarker>();
+                SingleMovementMarkersController mmc = SingleMovementMarkersController.Instance;
+                mmc.CommitMovementMarker(marker);
+                // End turn
+                _currentPlayerColor = _currentPlayerColor == GameColor.Light ? GameColor.Dark : GameColor.Light;
+                Debug.Log($"Player {_currentPlayerColor} turn");
+                // Check victory
             }
         }
     }
