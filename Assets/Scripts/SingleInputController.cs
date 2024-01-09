@@ -22,6 +22,11 @@ public class SingleInputController : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    void Start()
+    {
+        RulesStrategy rules = SingleRulesContext.Instance.Rules;
+        _currentPlayerColor = rules.StartingPieceColor;
+    }
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
