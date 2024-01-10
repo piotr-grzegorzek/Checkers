@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SingleInputController : MonoBehaviour
@@ -26,6 +29,9 @@ public class SingleInputController : MonoBehaviour
     {
         RulesStrategy rules = SingleRulesContext.Instance.Rules;
         _currentPlayerColor = rules.StartingPieceColor;
+
+        //BUG: Pieces dont get killed during victory check, temporarly executing it here
+        StartCoroutine(CheckVictoryRoutine());
     }
     void Update()
     {
@@ -56,5 +62,28 @@ public class SingleInputController : MonoBehaviour
                 // Check victory
             }
         }
+    }
+
+    private IEnumerator CheckVictoryRoutine()
+    {
+        bool victory = false;
+        while (!victory)
+        {
+            victory = CheckVictory();
+            yield return new WaitForSeconds(1f);
+        }
+    }
+    private bool CheckVictory()
+    {
+        IEnumerable<Piece> pieces = Utils.GetPiecesOfColor(_currentPlayerColor);
+        // Check if the attacked player got last piece killed
+        if (!pieces.Any())
+        {
+            // Victory
+            GameColor wonColor = _currentPlayerColor == GameColor.Light ? GameColor.Dark : GameColor.Light;
+            Debug.Log($"{wonColor} won");
+            return true;
+        }
+        return false;
     }
 }

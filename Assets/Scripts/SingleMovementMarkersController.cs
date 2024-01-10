@@ -28,7 +28,7 @@ public class SingleMovementMarkersController : MonoBehaviour
         ClearMovementMarkers();
 
         // Get pieces from the current player
-        IEnumerable<Piece> currentPlayerPieces = FindObjectsOfType<Piece>().Where(p => p.PieceColor == piece.PieceColor);
+        IEnumerable<Piece> currentPlayerPieces = Utils.GetPiecesOfColor(piece.PieceColor);
         //Get dark tiles
         IEnumerable<Tile> darkTiles = FindObjectsOfType<Tile>().Where(t => t.TileColor == GameColor.Dark);
 
@@ -98,7 +98,7 @@ public class SingleMovementMarkersController : MonoBehaviour
         {
             return false;
         }
-        
+
         // Get the distance between the piece and the tile
         float distance = Vector3.Distance(
             new Vector3(piece.transform.position.x, 0, piece.transform.position.z),
