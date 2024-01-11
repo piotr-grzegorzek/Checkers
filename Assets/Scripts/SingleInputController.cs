@@ -66,10 +66,12 @@ public class SingleInputController : MonoBehaviour
 
     private IEnumerator CheckVictoryRoutine()
     {
-        bool victory = false;
-        while (!victory)
+        while (true)
         {
-            victory = CheckVictory();
+            if (CheckVictory())
+            {
+                break;
+            }
             yield return new WaitForSeconds(1f);
         }
     }
