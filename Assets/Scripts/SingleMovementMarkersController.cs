@@ -122,7 +122,6 @@ public class SingleMovementMarkersController : MonoBehaviour
                 }
 
                 RaycastHit[] hits = Physics.RaycastAll(piece.transform.position, direction, distanceToTile);
-                bool hasCaptured = false;
                 foreach (RaycastHit hit in hits)
                 {
                     if (hit.collider.TryGetComponent<Piece>(out var hitPiece))
@@ -131,7 +130,6 @@ public class SingleMovementMarkersController : MonoBehaviour
                         if (hitPiece.PieceColor != piece.PieceColor)
                         {
                             capturablePieces.Add(hitPiece);
-                            hasCaptured = true;
                         }
                         else
                         {
@@ -179,6 +177,13 @@ public class SingleMovementMarkersController : MonoBehaviour
             if (distance == Mathf.Sqrt(2))
             {
                 // Single tile movement
+                // Check if the pawn is moving backwards
+                if ((piece.PieceColor == GameColor.Light && tile.transform.position.z < piece.transform.position.z) ||
+                    (piece.PieceColor == GameColor.Dark && tile.transform.position.z > piece.transform.position.z))
+                {
+                    // The pawn is moving backwards
+                    return false;
+                }
                 return true;
             }
             else if (distance == 2 * Mathf.Sqrt(2))
@@ -195,9 +200,30 @@ public class SingleMovementMarkersController : MonoBehaviour
                     Piece middlePiece = GetPieceFromCollider(Physics.OverlapSphere(middleTile.transform.position, 0.1f));
                     if (middlePiece != null && middlePiece.PieceColor != piece.PieceColor)
                     {
-                        // Add the capturable piece to the list
-                        capturablePieces.Add(middlePiece);
-                        return true;
+                        // Check if the pawn is moving backwards and if it's allowed to capture backwards
+                        if ((piece.PieceColor == GameColor.Light && tile.transform.position.z < piece.transform.position.z) ||
+                            (piece.PieceColor == GameColor.Dark && tile.transform.position.z > piece.transform.position.z))
+                        {
+                            // The pawn is moving backwards
+                            RulesStrategy rules = SingleRulesContext.Instance.Rules;
+                            if (rules.PawnCanCaptureBackwards)
+                            {
+                                // The pawn can capture backwards
+                                capturablePieces.Add(middlePiece);
+                                return true;
+                            }
+                            else
+                            {
+                                // The pawn cannot capture backwards
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            // The pawn is not moving backwards
+                            capturablePieces.Add(middlePiece);
+                            return true;
+                        }
                     }
                 }
             }

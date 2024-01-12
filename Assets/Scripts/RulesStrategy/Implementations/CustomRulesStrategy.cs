@@ -8,8 +8,9 @@ internal class CustomRulesStrategy : RulesStrategy
     internal override Color DarkPieceColor { get; }
     internal override GameColor StartingPieceColor { get; }
     internal override bool FlyingKing { get; }
+    internal override bool PawnCanCaptureBackwards { get; }
 
-    internal CustomRulesStrategy(int boardSize, Color playableTileColor, int rowsPerTeam, Color darkPieceColor, GameColor startingPieceColor, bool flyingKing)
+    internal CustomRulesStrategy(int boardSize, Color playableTileColor, int rowsPerTeam, Color darkPieceColor, GameColor startingPieceColor, bool flyingKing, bool pawnCanCaptureBackwards)
     {
         BoardSize = boardSize;
         PlayableTileColor = playableTileColor;
@@ -17,5 +18,6 @@ internal class CustomRulesStrategy : RulesStrategy
         DarkPieceColor = darkPieceColor;
         StartingPieceColor = startingPieceColor;
         FlyingKing = flyingKing;
+        PawnCanCaptureBackwards = pawnCanCaptureBackwards;
     }
 }

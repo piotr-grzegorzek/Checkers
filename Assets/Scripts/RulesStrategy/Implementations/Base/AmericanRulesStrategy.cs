@@ -8,4 +8,5 @@ internal class AmericanRulesStrategy : RulesStrategy
     internal override Color DarkPieceColor => Color.red;
     internal override GameColor StartingPieceColor => GameColor.Dark;
     internal override bool FlyingKing => throw new System.NotImplementedException();
+    internal override bool PawnCanCaptureBackwards => throw new System.NotImplementedException();
 }

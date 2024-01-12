@@ -37,7 +37,8 @@ public class SingleStartBoardGenerator : MonoBehaviour
             rowsPerTeam: 1,
             darkPieceColor: Color.black,
             startingPieceColor: GameColor.Light,
-            flyingKing: true
+            flyingKing: true,
+            pawnCanCaptureBackwards: true
         );
         //SingleRulesContext.Instance.Rules = BaseRulesStrategyFactory.Create(BaseRulesStrategyType.Brazilian);
         //

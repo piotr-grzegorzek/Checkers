@@ -8,4 +8,5 @@ internal abstract class RulesStrategy
     internal abstract Color DarkPieceColor { get; }
     internal abstract GameColor StartingPieceColor { get; }
     internal abstract bool FlyingKing { get; }
+    internal abstract bool PawnCanCaptureBackwards { get; }
 }
