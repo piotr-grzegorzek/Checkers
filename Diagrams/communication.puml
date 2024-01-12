@@ -1,0 +1,19 @@
+@startuml
+skinparam linestyle ortho
+rectangle "SingleStartBoardGenerator" as one
+rectangle "SingleInputController" as two
+rectangle "RulesStrategy" as three
+rectangle "CustomRulesStrategyFactory" as four
+rectangle "Piece" as five
+rectangle "Tile" as six
+rectangle "MovementMarker" as seven
+rectangle "SingleMovementMarkersController" as eight
+one -right-> two: Initiates game
+two -right-> three: Retrieves game rules
+two --> four: Sets custom game rules
+two --> five: Controls Piece
+two --> six: Controls Tile
+two --> seven: Controls MovementMarker
+two --> eight: Controls SingleMovementMarkersController
+three -[hidden]- four
+@enduml
