@@ -72,7 +72,7 @@ public class SingleMovementMarkersController : MonoBehaviour
     {
         // Move the piece to the marker
         Piece piece = marker.SourcePiece;
-        piece.transform.position = marker.transform.position;
+        piece.MoveTo(marker.transform.position);
 
         // Capture the pieces
         foreach (var capturablePiece in marker.CapturablePieces)
