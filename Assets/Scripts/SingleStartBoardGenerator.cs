@@ -15,7 +15,6 @@ public class SingleStartBoardGenerator : MonoBehaviour
 
     private int _boardSize;
     private int _rowsPerTeam;
-    private const float _pieceUpOffset = 0.5f;
 
     void Awake()
     {
@@ -38,7 +37,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
             darkPieceColor: Color.black,
             startingPieceColor: GameColor.Light,
             flyingKing: true,
-            pawnCanCaptureBackwards: true
+            pawnCanCaptureBackwards: false
         );
         //SingleRulesContext.Instance.Rules = BaseRulesStrategyFactory.Create(BaseRulesStrategyType.Brazilian);
         //
@@ -76,6 +75,6 @@ public class SingleStartBoardGenerator : MonoBehaviour
 
     private Piece InstantiatePiece(int x, int z)
     {
-        return Instantiate(_piecePrefab, new Vector3(x, _pieceUpOffset, z), Quaternion.identity, _piecesGameObject.transform).GetComponent<Piece>();
+        return Instantiate(_piecePrefab, new Vector3(x, Utils.PieceUpOffset, z), Quaternion.identity, _piecesGameObject.transform).GetComponent<Piece>();
     }
 }
