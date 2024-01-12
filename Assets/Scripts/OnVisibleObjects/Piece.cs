@@ -25,7 +25,10 @@ public class Piece : MonoBehaviour
     internal void MoveTo(Vector3 position)
     {
         transform.position = position;
-        CheckAndPromoteToKing(position);
+        if (Type == PieceType.Pawn)
+        {
+            CheckAndPromoteToKing(position);
+        }
     }
 
     private void CheckAndPromoteToKing(Vector3 position)
