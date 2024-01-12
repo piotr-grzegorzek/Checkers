@@ -7,4 +7,5 @@ internal class InternationalRulesStrategy : RulesStrategy
     internal override int RowsPerTeam => 4;
     internal override Color DarkPieceColor => Color.black;
     internal override GameColor StartingPieceColor => GameColor.Light;
+    internal override bool FlyingKing => throw new System.NotImplementedException();
 }

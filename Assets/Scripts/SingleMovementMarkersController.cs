@@ -104,37 +104,107 @@ public class SingleMovementMarkersController : MonoBehaviour
             new Vector3(piece.transform.position.x, 0, piece.transform.position.z),
             new Vector3(tile.transform.position.x, 0, tile.transform.position.z));
 
-        if (distance == Mathf.Sqrt(2))
+        // Handle king's movement
+        if (piece.Type == PieceType.King)
         {
-            // Single tile movement
-            return true;
-        }
-        else if (distance == 2 * Mathf.Sqrt(2))
-        {
-            // Jumping over a piece
-            // Get the middle tile
-            Vector3 middlePoint = Vector3.Lerp(piece.transform.position, tile.transform.position, 0.5f);
-            Tile middleTile = darkTiles.FirstOrDefault(t =>
-                (int)t.transform.position.x == (int)middlePoint.x &&
-                (int)t.transform.position.z == (int)middlePoint.z);
-
-            if (middleTile != null)
+            // If rules allow flying king, it can move any amount of tiles
+            if (SingleRulesContext.Instance.Rules.FlyingKing)
             {
-                // Check if the middle tile is occupied by an enemy piece
-                Piece middlePiece = GetPieceFromCollider(Physics.OverlapSphere(middleTile.transform.position, 0.1f));
+                // Implement the logic for flying king
+                Vector3 direction = (tile.transform.position - piece.transform.position).normalized;
+                float distanceToTile = Vector3.Distance(piece.transform.position, tile.transform.position);
 
-                if (middlePiece != null && middlePiece.PieceColor != piece.PieceColor)
+                // Check if the movement is diagonal
+                if (Mathf.Abs(piece.transform.position.x - tile.transform.position.x) != Mathf.Abs(piece.transform.position.z - tile.transform.position.z))
                 {
-                    // Add the capturable piece to the list
-                    capturablePieces.Add(middlePiece);
+                    // The movement is not diagonal
+                    return false;
+                }
+
+                RaycastHit[] hits = Physics.RaycastAll(piece.transform.position, direction, distanceToTile);
+                bool hasCaptured = false;
+                foreach (RaycastHit hit in hits)
+                {
+                    if (hit.collider.TryGetComponent<Piece>(out var hitPiece))
+                    {
+                        // If there's a piece between the king and the target tile, the king can capture it
+                        if (hitPiece.PieceColor != piece.PieceColor)
+                        {
+                            capturablePieces.Add(hitPiece);
+                            hasCaptured = true;
+                        }
+                        else
+                        {
+                            // If there's a piece of the same color, the king cannot move
+                            return false;
+                        }
+                    }
+                }
+                // If there are no pieces of the same color between the king and the target tile, the king can move
+                return true;
+            }
+            else
+            {
+                // If not a flying king, it can move only 1 tile or capture
+                if (distance == Mathf.Sqrt(2))
+                {
+                    // Single tile movement
                     return true;
+                }
+                else if (distance == 2 * Mathf.Sqrt(2))
+                {
+                    // Jumping over a piece
+                    // Get the middle tile
+                    Vector3 middlePoint = Vector3.Lerp(piece.transform.position, tile.transform.position, 0.5f);
+                    Tile middleTile = darkTiles.FirstOrDefault(t =>
+                        (int)t.transform.position.x == (int)middlePoint.x &&
+                        (int)t.transform.position.z == (int)middlePoint.z);
+                    if (middleTile != null)
+                    {
+                        // Check if the middle tile is occupied by an enemy piece
+                        Piece middlePiece = GetPieceFromCollider(Physics.OverlapSphere(middleTile.transform.position, 0.1f));
+                        if (middlePiece != null && middlePiece.PieceColor != piece.PieceColor)
+                        {
+                            // Add the capturable piece to the list
+                            capturablePieces.Add(middlePiece);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            // Handle pawn's movement
+            if (distance == Mathf.Sqrt(2))
+            {
+                // Single tile movement
+                return true;
+            }
+            else if (distance == 2 * Mathf.Sqrt(2))
+            {
+                // Jumping over a piece
+                // Get the middle tile
+                Vector3 middlePoint = Vector3.Lerp(piece.transform.position, tile.transform.position, 0.5f);
+                Tile middleTile = darkTiles.FirstOrDefault(t =>
+                    (int)t.transform.position.x == (int)middlePoint.x &&
+                    (int)t.transform.position.z == (int)middlePoint.z);
+                if (middleTile != null)
+                {
+                    // Check if the middle tile is occupied by an enemy piece
+                    Piece middlePiece = GetPieceFromCollider(Physics.OverlapSphere(middleTile.transform.position, 0.1f));
+                    if (middlePiece != null && middlePiece.PieceColor != piece.PieceColor)
+                    {
+                        // Add the capturable piece to the list
+                        capturablePieces.Add(middlePiece);
+                        return true;
+                    }
                 }
             }
         }
 
         return false;
     }
-
     private Piece GetPieceFromCollider(Collider[] colliders)
     {
         foreach (Collider collider in colliders)

@@ -31,6 +31,7 @@ public class SingleInputController : MonoBehaviour
         _currentPlayerColor = rules.StartingPieceColor;
 
         //BUG: Pieces dont get killed during victory check, temporarly executing it here
+        // On destroy is last in order of execution
         StartCoroutine(CheckVictoryRoutine());
     }
     void Update()

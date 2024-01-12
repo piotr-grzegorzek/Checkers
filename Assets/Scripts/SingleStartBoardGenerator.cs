@@ -36,7 +36,8 @@ public class SingleStartBoardGenerator : MonoBehaviour
             playableTileColor: Color.blue,
             rowsPerTeam: 1,
             darkPieceColor: Color.black,
-            startingPieceColor: GameColor.Light
+            startingPieceColor: GameColor.Light,
+            flyingKing: true
         );
         //SingleRulesContext.Instance.Rules = BaseRulesStrategyFactory.Create(BaseRulesStrategyType.Brazilian);
         //

@@ -7,4 +7,5 @@ internal abstract class RulesStrategy
     internal abstract int RowsPerTeam { get; }
     internal abstract Color DarkPieceColor { get; }
     internal abstract GameColor StartingPieceColor { get; }
+    internal abstract bool FlyingKing { get; }
 }
