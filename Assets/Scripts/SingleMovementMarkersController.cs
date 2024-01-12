@@ -191,21 +191,32 @@ public class SingleMovementMarkersController : MonoBehaviour
         {
             // Single tile movement
             // Check if the pawn is moving backwards
-            if ((piece.PieceColor == GameColor.Light && tile.transform.position.z < piece.transform.position.z) ||
-                (piece.PieceColor == GameColor.Dark && tile.transform.position.z > piece.transform.position.z))
+            if (IsMovingBackwards(tile, piece))
             {
-                // The pawn is moving backwards
                 return false;
             }
             return true;
         }
         else if (distance == _jumpDistance)
         {
+            if (!SingleRulesContext.Instance.Rules.PawnCanCaptureBackwards)
+            {
+                // Check if the pawn is moving backwards
+                if (IsMovingBackwards(tile, piece))
+                {
+                    return false;
+                }
+            }
             // Jumping over a piece
             return HandleJumpOverPiece(tile, piece, darkTiles, capturablePieces);
         }
 
         return false;
+    }
+    private bool IsMovingBackwards(Tile tile, Piece piece)
+    {
+        return (piece.PieceColor == GameColor.Light && tile.transform.position.z < piece.transform.position.z) ||
+            (piece.PieceColor == GameColor.Dark && tile.transform.position.z > piece.transform.position.z);
     }
     private bool HandleJumpOverPiece(Tile tile, Piece piece, IEnumerable<Tile> darkTiles, List<Piece> capturablePieces)
     {
