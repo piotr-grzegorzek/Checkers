@@ -140,6 +140,7 @@ public class SingleMovementMarkersController : MonoBehaviour
             Vector3 direction = (tile.transform.position - piece.transform.position).normalized;
             float distanceToTile = Vector3.Distance(piece.transform.position, tile.transform.position);
             RaycastHit[] hits = Physics.RaycastAll(piece.transform.position, direction, distanceToTile);
+            bool triedCapture = false;
             foreach (RaycastHit hit in hits)
             {
                 if (hit.collider.TryGetComponent<Piece>(out var hitPiece))
@@ -147,7 +148,13 @@ public class SingleMovementMarkersController : MonoBehaviour
                     // If there's a piece between the king and the target tile, the king can capture it
                     if (hitPiece.PieceColor != piece.PieceColor)
                     {
+                        if (triedCapture)
+                        {
+                            // If the king has already tried to capture a piece and there's another piece directly behind it, the king cannot capture
+                            return false;
+                        }
                         capturablePieces.Add(hitPiece);
+                        triedCapture = true;
                     }
                     else
                     {
