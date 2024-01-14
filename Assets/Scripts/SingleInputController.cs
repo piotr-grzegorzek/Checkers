@@ -6,6 +6,8 @@ using UnityEngine;
 public class SingleInputController : MonoBehaviour
 {
     private static SingleInputController _instance;
+    private static int _lightPlayerKingMovesWithoutCapture = 0;
+    private static int _darkPlayerKingMovesWithoutCapture = 0;
 
     [SerializeField]
     LayerMask _pieceMask;
@@ -32,7 +34,7 @@ public class SingleInputController : MonoBehaviour
 
         //BUG: Pieces dont get killed during victory check, temporarly executing it here
         // On destroy is last in order of execution
-        StartCoroutine(CheckVictoryRoutine());
+        StartCoroutine(CheckGameStageRoutine());
     }
     void Update()
     {
@@ -65,11 +67,28 @@ public class SingleInputController : MonoBehaviour
         }
     }
 
-    private IEnumerator CheckVictoryRoutine()
+    internal static void HandleKingMoveWithoutCapture(GameColor color)
+    {
+        if (color == GameColor.Light)
+        {
+            _lightPlayerKingMovesWithoutCapture++;
+        }
+        else
+        {
+            _darkPlayerKingMovesWithoutCapture++;
+        }
+    }
+    internal static void HandlePieceCapture()
+    {
+        _lightPlayerKingMovesWithoutCapture = 0;
+        _darkPlayerKingMovesWithoutCapture = 0;
+    }
+
+    private IEnumerator CheckGameStageRoutine()
     {
         while (true)
         {
-            if (CheckVictory())
+            if (CheckVictory() || CheckDraw())
             {
                 break;
             }
@@ -85,6 +104,16 @@ public class SingleInputController : MonoBehaviour
             // Victory
             GameColor wonColor = _currentPlayerColor == GameColor.Light ? GameColor.Dark : GameColor.Light;
             Debug.Log($"{wonColor} won");
+            return true;
+        }
+        return false;
+    }
+    private bool CheckDraw()
+    {
+        if (_lightPlayerKingMovesWithoutCapture >= 15 || _darkPlayerKingMovesWithoutCapture >= 15)
+        {
+            // Draw
+            Debug.Log("Draw");
             return true;
         }
         return false;

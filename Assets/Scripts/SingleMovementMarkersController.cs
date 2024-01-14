@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -78,10 +79,15 @@ public class SingleMovementMarkersController : MonoBehaviour
         Piece piece = marker.SourcePiece;
         piece.MoveTo(marker.transform.position);
 
+        if (marker.CapturablePieces.Count == 0 && piece.Type == PieceType.King)
+        {
+            SingleInputController.HandleKingMoveWithoutCapture(piece.PieceColor);
+        }
         // Capture the pieces
         foreach (var capturablePiece in marker.CapturablePieces)
         {
             Destroy(capturablePiece.gameObject);
+            SingleInputController.HandlePieceCapture();
         }
 
         ClearMovementMarkers();
