@@ -15,6 +15,7 @@ public class SingleInputController : MonoBehaviour
     LayerMask _movementMarkerMask;
 
     private GameColor _currentPlayerColor;
+    private bool _gameRunning;
 
     void Awake()
     {
@@ -31,6 +32,7 @@ public class SingleInputController : MonoBehaviour
     {
         RulesStrategy rules = SingleRulesContext.Instance.Rules;
         _currentPlayerColor = rules.StartingPieceColor;
+        _gameRunning = true;
 
         //BUG: Pieces dont get killed during victory check, temporarly executing it here
         // On destroy is last in order of execution
@@ -47,7 +49,7 @@ public class SingleInputController : MonoBehaviour
                 // Piece clicked
                 Piece piece = hit.collider.GetComponent<Piece>();
                 // Check if it's the current player's piece
-                if (piece.PieceColor == _currentPlayerColor)
+                if (piece.PieceColor == _currentPlayerColor && _gameRunning)
                 {
                     SingleMovementMarkersController mmc = SingleMovementMarkersController.Instance;
                     mmc.MakeMovementMarkers(piece);
@@ -90,6 +92,7 @@ public class SingleInputController : MonoBehaviour
         {
             if (CheckVictory() || CheckDraw())
             {
+                _gameRunning = false;
                 break;
             }
             yield return new WaitForSeconds(1f);
@@ -110,7 +113,7 @@ public class SingleInputController : MonoBehaviour
     }
     private bool CheckDraw()
     {
-        if (_lightPlayerKingMovesWithoutCapture >= 15 || _darkPlayerKingMovesWithoutCapture >= 15)
+        if (_lightPlayerKingMovesWithoutCapture >= 15 && _darkPlayerKingMovesWithoutCapture >= 15)
         {
             // Draw
             Debug.Log("Draw");
