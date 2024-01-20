@@ -9,16 +9,19 @@ public class Piece : MonoBehaviour
         set
         {
             _pieceColor = value;
-            RulesStrategy rules = SingleRulesContext.Instance.Rules;
+            RulesStrategy rules = _rulesContext.Rules;
             _renderer.material.color = value == GameColor.Light ? Color.white : rules.DarkPieceColor;
         }
     }
     private GameColor _pieceColor;
 
+    private RulesContext _rulesContext;
     private Renderer _renderer;
 
     void Awake()
     {
+        // Couldnt serialize due to type mismatch (prefab and gameobject)
+        _rulesContext = FindObjectOfType<RulesContext>();
         _renderer = GetComponent<Renderer>();
     }
 
@@ -33,7 +36,7 @@ public class Piece : MonoBehaviour
 
     private void CheckAndPromoteToKing(Vector3 position)
     {
-        RulesStrategy rules = SingleRulesContext.Instance.Rules;
+        RulesStrategy rules = _rulesContext.Rules;
         switch (PieceColor)
         {
             case GameColor.Light when position.z >= rules.BoardSize - 1:

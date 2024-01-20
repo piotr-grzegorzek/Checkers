@@ -1,39 +1,24 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SingleMovementMarkersController : MonoBehaviour
+public class MovementMarkersController : MonoBehaviour
 {
-    internal static SingleMovementMarkersController Instance { get; private set; }
-
     [SerializeField]
     GameObject _movementMarkerPrefab;
     [SerializeField]
     GameObject _movementMarkersGameObject;
-
-    private readonly float _singleTileDistance = Mathf.Sqrt(2);
-    private readonly float _jumpDistance = 2 * Mathf.Sqrt(2);
-    private readonly float _pieceCheckRadius = 0.1f;
-
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    [SerializeField]
+    Board _board;
+    [SerializeField]
+    RulesContext _rulesContext;
 
     internal void MakeMovementMarkers(Piece piece)
     {
         ClearMovementMarkers();
 
         // Get pieces from the current player
-        IEnumerable<Piece> currentPlayerPieces = Utils.GetPiecesOfColor(piece.PieceColor);
+        IEnumerable<Piece> currentPlayerPieces = _board.GetPiecesOfColor(piece.PieceColor);
         //Get dark tiles
         IEnumerable<Tile> darkTiles = FindObjectsOfType<Tile>().Where(t => t.TileColor == GameColor.Dark);
 
@@ -82,20 +67,20 @@ public class SingleMovementMarkersController : MonoBehaviour
 
         if (marker.CapturablePieces.Count == 0 && piece.Type == PieceType.King)
         {
-            SingleInputController.HandleKingMoveWithoutCapture(piece.PieceColor);
+            _board.RegisterKingMoveWithoutCapture(piece.PieceColor);
         }
         // Capture the pieces from marker.CapturablePieces and marker.SourceMarker.CapturablePieces
         foreach (var capturablePiece in marker.CapturablePieces)
         {
             Destroy(capturablePiece.gameObject);
-            SingleInputController.HandlePieceCapture();
+            _board.RegisterPieceCapture();
         }
         if (marker.SourceMarker != null)
         {
             foreach (var capturablePiece in marker.SourceMarker.CapturablePieces)
             {
                 Destroy(capturablePiece.gameObject);
-                SingleInputController.HandlePieceCapture();
+                _board.RegisterPieceCapture();
             }
         }
 
@@ -115,7 +100,7 @@ public class SingleMovementMarkersController : MonoBehaviour
         MonoBehaviour current = (multiJumpTile != null) ? multiJumpTile : piece;
 
         // Allow only empty tiles
-        bool isOccupied = GetPieceFromCollider(Physics.OverlapSphere(tile.transform.position, _pieceCheckRadius)) != null;
+        bool isOccupied = GetPieceFromCollider(Physics.OverlapSphere(tile.transform.position, _board.PieceCheckRadius)) != null;
         if (isOccupied)
         {
             return false;
@@ -136,7 +121,7 @@ public class SingleMovementMarkersController : MonoBehaviour
     private bool HandleKingMovement(Tile tile, Piece piece, IEnumerable<Tile> darkTiles, List<Piece> capturablePieces, float distance, MonoBehaviour current)
     {
         // If rules allow flying king, it can move any amount of tiles
-        if (SingleRulesContext.Instance.Rules.FlyingKing)
+        if (_rulesContext.Rules.FlyingKing)
         {
             // Implement the logic for flying king
             // Check if the movement is diagonal
@@ -165,7 +150,7 @@ public class SingleMovementMarkersController : MonoBehaviour
                         {
                             if (hitToTarget.collider.TryGetComponent<Piece>(out var hitPieceToTarget))
                             {
-                                if (Vector3.Distance(hitPieceToTarget.transform.position, hitPiece.transform.position) == _singleTileDistance)
+                                if (Vector3.Distance(hitPieceToTarget.transform.position, hitPiece.transform.position) == _board.SingleTileDistance)
                                 {
                                     return false;
                                 }
@@ -186,7 +171,7 @@ public class SingleMovementMarkersController : MonoBehaviour
         else
         {
             // If not a flying king, it can move only 1 tile or capture
-            if (distance == _singleTileDistance)
+            if (distance == _board.SingleTileDistance)
             {
                 // Single tile movement
                 return true;
@@ -194,12 +179,12 @@ public class SingleMovementMarkersController : MonoBehaviour
             else
             {
                 // If not a flying king, it can move only 1 tile or capture
-                if (distance == _singleTileDistance)
+                if (distance == _board.SingleTileDistance)
                 {
                     // Single tile movement
                     return true;
                 }
-                else if (distance == _jumpDistance)
+                else if (distance == _board.JumpDistance)
                 {
                     // Jumping over a piece
                     return HandleJumpOverPiece(tile, piece, darkTiles, capturablePieces);
@@ -211,7 +196,7 @@ public class SingleMovementMarkersController : MonoBehaviour
     }
     private bool HandlePawnMovement(Tile tile, Piece piece, IEnumerable<Tile> darkTiles, List<Piece> capturablePieces, float distance, MonoBehaviour current)
     {
-        if (distance == _singleTileDistance)
+        if (distance == _board.SingleTileDistance)
         {
             // Single tile movement
             // Check if the pawn is moving backwards
@@ -221,9 +206,9 @@ public class SingleMovementMarkersController : MonoBehaviour
             }
             return true;
         }
-        else if (distance == _jumpDistance)
+        else if (distance == _board.JumpDistance)
         {
-            if (!SingleRulesContext.Instance.Rules.PawnCanCaptureBackwards)
+            if (!_rulesContext.Rules.PawnCanCaptureBackwards)
             {
                 // Check if the pawn is moving backwards
                 if (IsMovingBackwards(tile, piece, current))
@@ -252,7 +237,7 @@ public class SingleMovementMarkersController : MonoBehaviour
         if (middleTile != null)
         {
             // Check if the middle tile is occupied by an enemy piece
-            Piece middlePiece = GetPieceFromCollider(Physics.OverlapSphere(middleTile.transform.position, _pieceCheckRadius));
+            Piece middlePiece = GetPieceFromCollider(Physics.OverlapSphere(middleTile.transform.position, _board.PieceCheckRadius));
             if (middlePiece != null && middlePiece.PieceColor != piece.PieceColor)
             {
                 // Add the capturable piece to the list
@@ -276,7 +261,7 @@ public class SingleMovementMarkersController : MonoBehaviour
     }
     private MovementMarker InstantiateMovementMarker(Tile tile, Piece piece, List<Piece> capturablePieces, MovementMarker sourceMarker)
     {
-        Vector3 offset = new Vector3(0, Utils.PieceUpOffset, 0);
+        Vector3 offset = new Vector3(0, _board.PieceUpOffset, 0);
         Vector3 newMarkerPosition = tile.transform.position + offset;
         GameObject marker = Instantiate(_movementMarkerPrefab, newMarkerPosition, Quaternion.identity, _movementMarkersGameObject.transform);
         MovementMarker markerScript = marker.GetComponent<MovementMarker>();
@@ -288,7 +273,7 @@ public class SingleMovementMarkersController : MonoBehaviour
     private void InstantiateMultiJumps(Tile tile, Piece piece, in IEnumerable<Tile> darkTiles, MovementMarker sourceMarker)
     {
         // from dark tiles get only tiles which are _jumpDistance from tile
-        IEnumerable<Tile> possibleTiles = darkTiles.Where(t => Vector3.Distance(t.transform.position, tile.transform.position) == _jumpDistance);
+        IEnumerable<Tile> possibleTiles = darkTiles.Where(t => Vector3.Distance(t.transform.position, tile.transform.position) == _board.JumpDistance);
         foreach (var possibleTile in possibleTiles)
         {
             List<Piece> capturablePieces = new List<Piece>();
