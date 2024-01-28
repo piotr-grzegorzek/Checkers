@@ -1,0 +1,119 @@
+@startuml
+enum BaseRulesStrategyType {
+    American
+    Brazilian
+    International
+}
+enum GameColor {
+    Light
+    Dark
+}
+enum PieceType {
+    Pawn
+    King
+}
+
+class PreparedMovementMarker {
+    Tile: Tile
+    Piece: Piece
+    CapturablePieces: Piece[]
+}
+class Board {
+    _gameRunning : bool
+    _lightPlayerKingMovesWithoutCapture : int
+    _darkPlayerKingMovesWithoutCapture : int
+    _currentPlayerColor : GameColor
+    Start()
+    SelectPiece(Piece)
+    GetPiecesOfColor(GameColor)
+    RegisterKingMoveWithoutCapture(GameColor)
+    RegisterPieceCapture()
+    CommitMovementMarker(MovementMarker)
+    StartCheckGameStageRoutineAfterDelay()
+    CheckGameStageRoutine()
+    Victory()
+    Draw()
+    EndTurn()
+    CheckVictory()
+}
+class MovementMarker {
+    SourcePiece : Piece
+    CapturablePieces : Piece[]
+    SourceMarker : MovementMarker
+}
+class Piece {
+    Type : PieceType
+    PieceColor : GameColor
+}
+class Tile {
+    TileColor : Color
+}
+
+class RulesContext {
+    Rules : RulesStrategy
+}
+abstract class RulesStrategy {
+    {abstract} BoardSize : int
+    {abstract} PlayableTileColor : Color
+    {abstract} RowsPerTeam : int
+    {abstract} DarkPieceColor : Color
+    {abstract} StartingPieceColor : GameColor
+    {abstract} FlyingKing : bool
+    {abstract} PawnCanCaptureBackwards : bool
+}
+class AmericanRulesStrategy implements RulesStrategy {
+    BoardSize : int
+    PlayableTileColor : Color
+    RowsPerTeam : int
+    DarkPieceColor : Color
+    StartingPieceColor : GameColor
+    FlyingKing : bool
+    PawnCanCaptureBackwards : bool
+}
+class BrazilianRulesStrategy implements RulesStrategy {
+    BoardSize : int
+    PlayableTileColor : Color
+    RowsPerTeam : int
+    DarkPieceColor : Color
+    StartingPieceColor : GameColor
+    FlyingKing : bool
+    PawnCanCaptureBackwards : bool
+}
+class InternationalRulesStrategy implements RulesStrategy {
+    BoardSize : int
+    PlayableTileColor : Color
+    RowsPerTeam : int
+    DarkPieceColor : Color
+    StartingPieceColor : GameColor
+    FlyingKing : bool
+    PawnCanCaptureBackwards : bool
+}
+class CustomRulesStrategy implements RulesStrategy {
+    BoardSize : int
+    PlayableTileColor : Color
+    RowsPerTeam : int
+    DarkPieceColor : Color
+    StartingPieceColor : GameColor
+    FlyingKing : bool
+    PawnCanCaptureBackwards : bool
+}
+class BaseRulesStrategyFactory {
+    Create(BaseRulesStrategyType) : RulesStrategy
+}
+class CustomRulesStrategyFactory {
+    Create(int, Color, int, Color, GameColor, bool, bool) : RulesStrategy
+}
+
+class SingleStartBoardGenerator {
+}
+class InputController {
+}
+class MovementMarkersController {
+}
+
+MovementMarkersController *-- PreparedMovementMarker
+RulesContext *-- RulesStrategy
+MovementMarkersController o-- Piece
+MovementMarkersController o-- Tile
+
+@enduml

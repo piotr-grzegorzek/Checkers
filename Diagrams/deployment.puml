@@ -1,0 +1,31 @@
+@startuml
+node UserDevice {
+  artifact UnityEngine <<manifest>>
+  artifact CheckersGame <<deploy>>
+}
+
+node GameLogic {
+  node Rules <<manifest>>
+}
+
+node UserInterface {
+  node MainMenu <<manifest>>
+  node GameScreen <<manifest>>
+  node Settings <<manifest>>
+}
+
+node SoundEffects {
+  node BackgroundMusic <<manifest>>
+  node GameSounds <<manifest>>
+}
+
+node GameAssets {
+  node Models <<manifest>>
+  node Textures <<manifest>>
+}
+
+UserDevice .up.> GameLogic : <<deploy>>
+UserDevice .up.> UserInterface : <<deploy>>
+UserDevice .up.> SoundEffects : <<deploy>>
+UserDevice .up.> GameAssets : <<deploy>>
+@enduml

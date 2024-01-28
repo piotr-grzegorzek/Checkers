@@ -1,0 +1,43 @@
+@startuml
+start
+
+:Initialize Game;
+:Create game board;
+:Place pieces on board;
+:Initialize move counter for Player 1;
+:Initialize move counter for Player 2;
+:Initialize capture counter;
+
+while (Game not over) is (true)
+  :Player 1's Turn;
+  if (Are there any valid moves for Player 1?) then (yes)
+    :Player 1 selects a piece;
+    :Player 1 chooses a valid move;
+    :Update game board;
+    :Update move counter for Player 1;
+    if (Player 1 made a capture?) then (yes)
+      :Reset move counter for both players;
+      :Increment capture counter;
+    endif
+  endif
+
+  :Player 2's Turn;
+  if (Are there any valid moves for Player 2?) then (yes)
+    :Player 2 selects a piece;
+    :Player 2 chooses a valid move;
+    :Update game board;
+    :Update move counter for Player 2;
+    if (Player 2 made a capture?) then (yes)
+      :Reset move counter for both players;
+      :Increment capture counter;
+    endif
+  endif
+
+  if (Both players made 14 moves with a king and no piece was captured?) then (yes)
+    :Game is a draw;
+    stop
+  endif
+endwhile
+
+stop
+@enduml

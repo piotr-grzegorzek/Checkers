@@ -1,26 +1,17 @@
 @startuml
-' -----------------------------------------------------
-skinparam defaultTextAlignment center
-' -----------------------------------------------------
-top to bottom direction
 
-frame "Checkers Unity Project" {
+CheckersGame - [GameLogic]
+[GameLogic] ..> Player1 : use
+[GameLogic] ..> Player2 : use
+[GameLogic] ..> Board : use
+[GameLogic] ..> Rules : use
 
-frame "Scripts" {
+CheckersGame - [UserInterface]
+[UserInterface] ..> GameLogic : use
+[UserInterface] ..> Settings : use
 
-node "MovementMarker\n[MovementMarker.cs](Assets/Scripts/OnVisibleObjects/MovementMarker.cs)" <<Unity MonoBehaviour>>
-node "BaseRulesStrategyFactory\n[BaseRulesStrategyFactory.cs](Assets/Scripts/RulesStrategy/Factories/BaseRulesStrategyFactory.cs)" <<Unity MonoBehaviour>>
-node "CustomRulesStrategyFactory\n[CustomRulesStrategyFactory.cs](Assets/Scripts/RulesStrategy/Factories/CustomRulesStrategyFactory.cs)" <<Unity MonoBehaviour>>
-node "AmericanRulesStrategy\n[AmericanRulesStrategy.cs](Assets/Scripts/RulesStrategy/Implementations/Base/AmericanRulesStrategy.cs)" <<Unity MonoBehaviour>>
-node "BrazilianRulesStrategy\n[BrazilianRulesStrategy.cs](Assets/Scripts/RulesStrategy/Implementations/Base/BrazilianRulesStrategy.cs)" <<Unity MonoBehaviour>>
-node "InternationalRulesStrategy\n[InternationalRulesStrategy.cs](Assets/Scripts/RulesStrategy/Implementations/Base/InternationalRulesStrategy.cs)" <<Unity MonoBehaviour>>
-node "RulesStrategy\n[RulesStrategy.cs](Assets/Scripts/RulesStrategy/RulesStrategy.cs)" <<Unity MonoBehaviour>>
-node "SingleRulesContext\n[SingleRulesContext.cs](Assets/Scripts/RulesStrategy/SingleRulesContext.cs)" <<Unity MonoBehaviour>>
-node "SingleInputController\n[SingleInputController.cs](Assets/Scripts/SingleInputController.cs)" <<Unity MonoBehaviour>>
-node "SingleMovementMarkersController\n[SingleMovementMarkersController.cs](Assets/Scripts/SingleMovementMarkersController.cs)" <<Unity MonoBehaviour>>
-node "Utils\n[Utils.cs](Assets/Scripts/Utils.cs)" <<Unity MonoBehaviour>>
+CheckersGame - [DataAccess]
+[DataAccess] ..> GameLogic : use
+[DataAccess] ..> UserInterface : use
 
-}
-
-}
 @enduml

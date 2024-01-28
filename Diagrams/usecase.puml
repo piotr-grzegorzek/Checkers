@@ -1,0 +1,23 @@
+@startuml
+left to right direction
+actor Gracz
+package Gra {
+  usecase "Rozpoczęcie rozgrywki" as UC1
+  usecase "Wybór trybu gry" as UC2
+  usecase "Wybór pionka" as UC3
+  usecase "Wybór pola" as UC4
+  usecase "Zakończenie rozgrywki" as UC5
+  usecase "Zwycięstwo" as UC6
+  usecase "Przegrana" as UC7
+  usecase "Remis" as UC8
+}
+Gracz --> UC1
+Gracz --> UC4
+
+UC1 ..> UC2 : <<include>>
+UC4 ..> UC3 : <<include>>
+UC5 ..> UC4 : <<extend>>
+UC6 ..> UC5 : <<extend>>
+UC7 ..> UC5 : <<extend>>
+UC8 ..> UC5 : <<extend>>
+@enduml

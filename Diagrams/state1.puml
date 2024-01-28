@@ -1,0 +1,31 @@
+@startuml
+
+[*] --> GameStart : Initialize Game
+
+state GameStart {
+  [*] --> CreateBoard : Create game board
+  CreateBoard --> PlacePieces : Place pieces on board
+  PlacePieces --> Player1Turn : Start game
+}
+
+state Player1Turn {
+  [*] --> CheckMoves1 : Check for valid moves
+  CheckMoves1 --> MakeMove1 : Player 1 makes a move
+  MakeMove1 --> CheckWin1 : Check if Player 1 wins
+  CheckWin1 --> Player2Turn : Switch to Player 2
+  CheckWin1 --> GameEnd : Player 1 wins
+}
+
+state Player2Turn {
+  [*] --> CheckMoves2 : Check for valid moves
+  CheckMoves2 --> MakeMove2 : Player 2 makes a move
+  MakeMove2 --> CheckWin2 : Check if Player 2 wins
+  CheckWin2 --> Player1Turn : Switch to Player 1
+  CheckWin2 --> GameEnd : Player 2 wins
+}
+
+state GameEnd {
+  [*] --> End : Game over
+}
+
+@enduml

@@ -1,0 +1,89 @@
+@startuml
+
+object "BaseRulesStrategyType: American" as AmericanRules
+object "BaseRulesStrategyType: Brazilian" as BrazilianRules
+object "BaseRulesStrategyType: International" as InternationalRules
+
+object "GameColor: Light" as LightColor
+object "GameColor: Dark" as DarkColor
+
+object "PieceType: Pawn" as Pawn
+object "PieceType: King" as King
+
+object "PreparedMovementMarker" as Marker1 {
+    Tile: "Tile1"
+    Piece: "Pawn"
+    CapturablePieces: "King"
+}
+
+object "Board" as Board1 {
+    _gameRunning : true
+    _lightPlayerKingMovesWithoutCapture : 0
+    _darkPlayerKingMovesWithoutCapture : 0
+    _currentPlayerColor : "LightColor"
+}
+
+object "MovementMarker" as Marker2 {
+    SourcePiece : "Pawn"
+    CapturablePieces : "King"
+    SourceMarker : "Marker1"
+}
+
+object "Piece" as Piece1 {
+    Type : "Pawn"
+    PieceColor : "LightColor"
+}
+
+object "Tile" as Tile1 {
+    TileColor : "White"
+}
+
+object "RulesContext" as Context1 {
+    Rules : "AmericanRules"
+}
+
+object "AmericanRulesStrategy" as AmericanStrategy {
+    BoardSize : 8
+    PlayableTileColor : "Black"
+    RowsPerTeam : 4
+    DarkPieceColor : "Black"
+    StartingPieceColor : "DarkColor"
+    FlyingKing : false
+    PawnCanCaptureBackwards : true
+}
+
+object "BaseRulesStrategyFactory" as Factory1
+
+object "SingleStartBoardGenerator" as Generator1
+
+object "InputController" as Controller1
+
+object "MovementMarkersController" as Controller2
+
+' Relationships
+AmericanRules <|-- Context1
+BrazilianRules <|-- Context1
+InternationalRules <|-- Context1
+
+LightColor <|-- Piece1
+DarkColor <|-- Piece1
+
+Pawn <|-- Piece1
+King <|-- Piece1
+
+Marker1 *-- Board1
+Marker2 *-- Board1
+
+Piece1 *-- Marker1
+Piece1 *-- Marker2
+
+Tile1 *-- Marker1
+
+AmericanStrategy <|-- Factory1
+
+Board1 o-- Generator1
+
+Controller1 o-- Board1
+Controller2 o-- Board1
+
+@enduml

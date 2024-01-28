@@ -1,0 +1,23 @@
+@startuml
+    skinparam monochrome true
+    Player1 -> Board: Check Valid Moves
+    Board --> Player1: Valid Moves Response
+    Player1 -> Board: Make Move
+    Board --> Player1: Move Response
+    alt Move is a capture
+        Player1 -> Board: Capture Piece
+        Board --> Player1: Capture Response
+    end
+    Player1 -> Board: Check for Victory
+    Board --> Player1: Victory Status
+    Player2 -> Board: Check Valid Moves
+    Board --> Player2: Valid Moves Response
+    Player2 -> Board: Make Move
+    Board --> Player2: Move Response
+    alt Move is a capture
+        Player2 -> Board: Capture Piece
+        Board --> Player2: Capture Response
+    end
+    Player2 -> Board: Check for Victory
+    Board --> Player2: Victory Status
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+    skinparam monochrome true
+    Player1 -> Board: Check Valid Moves
+    Board --> Player1: Valid Moves Response
+    Player1 -> Board: Make Move
+    Board --> Player1: Move Response
+    alt Move is a king move
+        Player1 -> Board: Increment King Move Counter
+        Board --> Player1: King Move Counter Response
+    end
+    Player1 -> Board: Check for Draw
+    Board --> Player1: Draw Status
+    Player2 -> Board: Check Valid Moves
+    Board --> Player2: Valid Moves Response
+    Player2 -> Board: Make Move
+    Board --> Player2: Move Response
+    alt Move is a king move
+        Player2 -> Board: Increment King Move Counter
+        Board --> Player2: King Move Counter Response
+    end
+    Player2 -> Board: Check for Draw
+    Board --> Player2: Draw Status
+@enduml

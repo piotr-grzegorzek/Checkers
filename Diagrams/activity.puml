@@ -1,0 +1,39 @@
+@startuml
+start
+
+:Initialize Game;
+:Create game board;
+:Place pieces on board;
+
+while (Game not over) is (true)
+  :Player 1's Turn;
+  if (Are there any valid moves for Player 1?) then (yes)
+    :Player 1 selects a piece;
+    :Player 1 chooses a valid move;
+    :Update game board;
+    if (Player 1 has all opponent's pieces captured?) then (yes)
+      :Player 1 wins;
+      stop
+    endif
+  else (no)
+    :Player 2 wins;
+    stop
+  endif
+
+  :Player 2's Turn;
+  if (Are there any valid moves for Player 2?) then (yes)
+    :Player 2 selects a piece;
+    :Player 2 chooses a valid move;
+    :Update game board;
+    if (Player 2 has all opponent's pieces captured?) then (yes)
+      :Player 2 wins;
+      stop
+    endif
+  else (no)
+    :Player 1 wins;
+    stop
+  endif
+endwhile
+
+stop
+@enduml

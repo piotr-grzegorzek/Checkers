@@ -1,0 +1,35 @@
+@startuml
+
+[*] --> GameStart : Initialize Game
+
+state GameStart {
+  [*] --> CreateBoard : Create game board
+  CreateBoard --> PlacePieces : Place pieces on board
+  PlacePieces --> Player1Turn : Start game
+}
+
+state Player1Turn {
+  [*] --> CheckMoves1 : Check for valid moves
+  CheckMoves1 --> MakeMove1 : Player 1 makes a move
+  MakeMove1 --> CheckKingMoves1 : Check if move was a king move
+  CheckKingMoves1 --> IncrementKingCounter1 : Increment king move counter
+  IncrementKingCounter1 --> CheckDraw : Check if draw conditions are met
+  CheckDraw --> GameEnd : Game is a draw
+  CheckDraw --> Player2Turn : Switch to Player 2
+}
+
+state Player2Turn {
+  [*] --> CheckMoves2 : Check for valid moves
+  CheckMoves2 --> MakeMove2 : Player 2 makes a move
+  MakeMove2 --> CheckKingMoves2 : Check if move was a king move
+  CheckKingMoves2 --> IncrementKingCounter2 : Increment king move counter
+  IncrementKingCounter2 --> CheckDraw : Check if draw conditions are met
+  CheckDraw --> GameEnd : Game is a draw
+  CheckDraw --> Player1Turn : Switch to Player 1
+}
+
+state GameEnd {
+  [*] --> End : Game over
+}
+
+@enduml
