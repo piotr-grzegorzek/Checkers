@@ -33,6 +33,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
     {
         InitializeBoardParameters();
         GenerateTilesAndPieces();
+        PositionCamera();
     }
 
     private void InitializeBoardParameters()
@@ -78,9 +79,22 @@ public class SingleStartBoardGenerator : MonoBehaviour
     {
         return Instantiate(_piecePrefab, new Vector3(x, _board.PieceUpOffset, z), Quaternion.identity, _piecesGameObject.transform).GetComponent<Piece>();
     }
+    private void PositionCamera()
+    {
+        float xPos = _rulesContext.Rules.BoardSize / 2;
+        float yPos = _rulesContext.Rules.BoardSize;
+        float zPos = -_rulesContext.Rules.BoardSize / 2;
+
+        float xRot = 45;
+        float yRot = 0;
+        float zRot = 0;
+
+        Camera.main.transform.SetPositionAndRotation(new Vector3(xPos, yPos, zPos), Quaternion.Euler(xRot, yRot, zRot));
+    }
 
     private void Temp()
     {
+        /*
         _rulesContext.Rules = CustomRulesStrategyFactory.Create(
             boardSize: 5,
             playableTileColor: Color.blue,
@@ -90,6 +104,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
             flyingKing: true,
             pawnCanCaptureBackwards: false
         );
-        //_rulesContext.Rules = BaseRulesStrategyFactory.Create(BaseRulesStrategyType.Brazilian);
+        */
+        _rulesContext.Rules = BaseRulesStrategyFactory.Create(BaseRulesStrategyType.Brazilian);
     }
 }

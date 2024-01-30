@@ -15,12 +15,14 @@ public class Piece : MonoBehaviour
     }
     private GameColor _pieceColor;
 
+    private Board _board;
     private RulesContext _rulesContext;
     private Renderer _renderer;
 
     void Awake()
     {
         // Couldnt serialize due to type mismatch (prefab and gameobject)
+        _board = FindObjectOfType<Board>();
         _rulesContext = FindObjectOfType<RulesContext>();
         _renderer = GetComponent<Renderer>();
     }
@@ -28,6 +30,7 @@ public class Piece : MonoBehaviour
     internal void MoveTo(Vector3 position)
     {
         transform.position = position;
+        transform.position = new Vector3(position.x, _board.PieceUpOffset, position.z);
         if (Type == PieceType.Pawn)
         {
             CheckAndPromoteToKing(position);
