@@ -9,4 +9,9 @@ public class RulesContext : MonoBehaviour
         set => _rules = value;
     }
     private RulesStrategy _rules;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 }

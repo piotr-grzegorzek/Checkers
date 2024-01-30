@@ -12,17 +12,16 @@ public class SingleStartBoardGenerator : MonoBehaviour
     GameObject _piecesGameObject;
     [SerializeField]
     Board _board;
-    [SerializeField]
-    RulesContext _rulesContext;
 
     private static SingleStartBoardGenerator _instance;
+
+    private RulesContext _rulesContext;
 
     void Awake()
     {
         if (_instance == null)
         {
             _instance = this;
-            Temp();
         }
         else
         {
@@ -31,6 +30,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
     }
     void Start()
     {
+        _rulesContext = FindObjectOfType<RulesContext>();
         InitializeBoardParameters();
         GenerateTilesAndPieces();
         PositionCamera();
@@ -90,21 +90,5 @@ public class SingleStartBoardGenerator : MonoBehaviour
         float zRot = 0;
 
         Camera.main.transform.SetPositionAndRotation(new Vector3(xPos, yPos, zPos), Quaternion.Euler(xRot, yRot, zRot));
-    }
-
-    private void Temp()
-    {
-        /*
-        _rulesContext.Rules = CustomRulesStrategyFactory.Create(
-            boardSize: 5,
-            playableTileColor: Color.blue,
-            rowsPerTeam: 1,
-            darkPieceColor: Color.black,
-            startingPieceColor: GameColor.Light,
-            flyingKing: true,
-            pawnCanCaptureBackwards: false
-        );
-        */
-        _rulesContext.Rules = BaseRulesStrategyFactory.Create(BaseRulesStrategyType.Brazilian);
     }
 }

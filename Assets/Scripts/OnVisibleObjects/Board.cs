@@ -7,8 +7,6 @@ public class Board : MonoBehaviour
 {
     [SerializeField]
     MovementMarkersController _mmc;
-    [SerializeField]
-    RulesContext _rulesContext;
 
     internal float PieceUpOffset
     {
@@ -36,6 +34,7 @@ public class Board : MonoBehaviour
     }
     private float _jumpDistance;
 
+    private RulesContext _rulesContext;
     private GameColor _currentPlayerColor;
     private bool _gameRunning = true;
     private int _lightPlayerKingMovesWithoutCapture = 0;
@@ -43,6 +42,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
+        _rulesContext = FindObjectOfType<RulesContext>();
         _currentPlayerColor = _rulesContext.Rules.StartingPieceColor;
 
         //BUG: Pieces dont get killed during victory check, temporarly executing it here

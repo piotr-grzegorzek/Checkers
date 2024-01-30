@@ -10,8 +10,14 @@ public class MovementMarkersController : MonoBehaviour
     GameObject _movementMarkersGameObject;
     [SerializeField]
     Board _board;
-    [SerializeField]
-    RulesContext _rulesContext;
+
+
+    private RulesContext _rulesContext;
+
+    void Start()
+    {
+        _rulesContext = FindObjectOfType<RulesContext>();
+    }
 
     internal void MakeMovementMarkers(Piece piece)
     {
