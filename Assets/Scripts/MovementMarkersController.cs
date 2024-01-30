@@ -280,6 +280,7 @@ public class MovementMarkersController : MonoBehaviour
             if (PrepareMovementMarker(possibleTile, piece, darkTiles, capturablePieces, tile) && capturablePieces.Count > 0)
             {
                 MovementMarker newMarker = InstantiateMovementMarker(possibleTile, piece, capturablePieces, sourceMarker);
+                sourceMarker.gameObject.SetActive(false);
                 InstantiateMultiJumps(possibleTile, piece, darkTiles, newMarker);
             }
         }
