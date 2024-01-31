@@ -12,6 +12,8 @@ public class SingleStartBoardGenerator : MonoBehaviour
     GameObject _piecesGameObject;
     [SerializeField]
     Board _board;
+    [SerializeField]
+    GameObject _table;
 
     private static SingleStartBoardGenerator _instance;
 
@@ -33,6 +35,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
         _rulesContext = FindObjectOfType<SingleRulesContext>();
         InitializeBoardParameters();
         GenerateTilesAndPieces();
+        SetupTable();
         PositionCamera();
     }
 
@@ -78,6 +81,13 @@ public class SingleStartBoardGenerator : MonoBehaviour
     private Piece InstantiatePiece(int x, int z)
     {
         return Instantiate(_piecePrefab, new Vector3(x, _board.PieceUpOffset, z), Quaternion.identity, _piecesGameObject.transform).GetComponent<Piece>();
+    }
+    private void SetupTable()
+    {
+        float tableSize = _rulesContext.Rules.BoardSize * 2;
+        _table.transform.localScale = new Vector3(tableSize, 1, tableSize);
+        float tablePosition = _rulesContext.Rules.BoardSize / 2 - 0.5f;
+        _table.transform.position = new Vector3(tablePosition, -1, tablePosition);
     }
     private void PositionCamera()
     {
