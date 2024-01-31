@@ -14,13 +14,15 @@ public class Tile : MonoBehaviour
     }
     private GameColor _tileColor;
 
-    private RulesContext _rulesContext;
+    internal bool CheckedMultiJump;
+
+    private SingleRulesContext _rulesContext;
     private Renderer _renderer;
 
     void Awake()
     {
         // Couldnt serialize due to type mismatch (prefab and gameobject)
-        _rulesContext = FindObjectOfType<RulesContext>();
+        _rulesContext = FindObjectOfType<SingleRulesContext>();
         _renderer = GetComponent<Renderer>();
     }
 }

@@ -16,14 +16,14 @@ public class Piece : MonoBehaviour
     private GameColor _pieceColor;
 
     private Board _board;
-    private RulesContext _rulesContext;
+    private SingleRulesContext _rulesContext;
     private Renderer _renderer;
 
     void Awake()
     {
         // Couldnt serialize due to type mismatch (prefab and gameobject)
         _board = FindObjectOfType<Board>();
-        _rulesContext = FindObjectOfType<RulesContext>();
+        _rulesContext = FindObjectOfType<SingleRulesContext>();
         _renderer = GetComponent<Renderer>();
     }
 

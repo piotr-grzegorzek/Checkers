@@ -12,11 +12,12 @@ public class MovementMarkersController : MonoBehaviour
     Board _board;
 
 
-    private RulesContext _rulesContext;
+    private SingleRulesContext _rulesContext;
+    private List<Piece> _multiCaptures;
 
     void Start()
     {
-        _rulesContext = FindObjectOfType<RulesContext>();
+        _rulesContext = FindObjectOfType<SingleRulesContext>();
     }
 
     internal void MakeMovementMarkers(Piece piece)
@@ -53,7 +54,7 @@ public class MovementMarkersController : MonoBehaviour
             foreach (var preparedMovementMarker in preparedMovementMarkers.Where(m => m.CapturablePieces.Count > 0 && m.Piece == piece))
             {
                 MovementMarker newMarker = InstantiateMovementMarker(preparedMovementMarker.Tile, preparedMovementMarker.Piece, preparedMovementMarker.CapturablePieces, null);
-                InstantiateMultiJumps(preparedMovementMarker.Tile, preparedMovementMarker.Piece, darkTiles, newMarker);
+                InstantiateMultiJumps(preparedMovementMarker.Tile, newMarker, preparedMovementMarker.Piece, darkTiles);
             }
         }
         else
@@ -81,13 +82,16 @@ public class MovementMarkersController : MonoBehaviour
             Destroy(capturablePiece.gameObject);
             _board.RegisterPieceCapture();
         }
-        if (marker.SourceMarker != null)
+        while (marker.SourceMarker != null)
         {
             foreach (var capturablePiece in marker.SourceMarker.CapturablePieces)
             {
                 Destroy(capturablePiece.gameObject);
                 _board.RegisterPieceCapture();
             }
+
+            // Update marker after destruction
+            marker = marker.SourceMarker;
         }
 
         ClearMovementMarkers();
@@ -99,6 +103,7 @@ public class MovementMarkersController : MonoBehaviour
         {
             Destroy(marker.gameObject);
         }
+        _multiCaptures = new List<Piece>();
     }
     private bool PrepareMovementMarker(Tile tile, Piece piece, IEnumerable<Tile> darkTiles, List<Piece> capturablePieces, Tile multiJumpTile = null)
     {
@@ -276,18 +281,19 @@ public class MovementMarkersController : MonoBehaviour
         markerScript.SourceMarker = sourceMarker;
         return markerScript;
     }
-    private void InstantiateMultiJumps(Tile tile, Piece piece, in IEnumerable<Tile> darkTiles, MovementMarker sourceMarker)
+    private void InstantiateMultiJumps(Tile sourceTile, MovementMarker sourceMarker, Piece piece, in IEnumerable<Tile> darkTiles)
     {
         // from dark tiles get only tiles which are _jumpDistance from tile
-        IEnumerable<Tile> possibleTiles = darkTiles.Where(t => Vector3.Distance(t.transform.position, tile.transform.position) == _board.JumpDistance);
+        IEnumerable<Tile> possibleTiles = darkTiles.Where(t => Vector3.Distance(t.transform.position, sourceTile.transform.position) == _board.JumpDistance);
         foreach (var possibleTile in possibleTiles)
         {
             List<Piece> capturablePieces = new List<Piece>();
-            if (PrepareMovementMarker(possibleTile, piece, darkTiles, capturablePieces, tile) && capturablePieces.Count > 0)
+            if (PrepareMovementMarker(possibleTile, piece, darkTiles, capturablePieces, sourceTile) && capturablePieces.Count > 0 && !(_multiCaptures.Intersect(capturablePieces).Count() > 0))
             {
+                _multiCaptures.AddRange(capturablePieces);
                 MovementMarker newMarker = InstantiateMovementMarker(possibleTile, piece, capturablePieces, sourceMarker);
                 sourceMarker.gameObject.SetActive(false);
-                InstantiateMultiJumps(possibleTile, piece, darkTiles, newMarker);
+                InstantiateMultiJumps(possibleTile, newMarker, piece, darkTiles);
             }
         }
     }

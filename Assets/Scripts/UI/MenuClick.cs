@@ -3,12 +3,17 @@ using UnityEngine.SceneManagement;
 
 public class MenuClick : MonoBehaviour
 {
-    [SerializeField]
-    RulesContext _rulesContext;
+    private SingleRulesContext _rulesContext;
+
+    void Start()
+    {
+        _rulesContext = FindObjectOfType<SingleRulesContext>();
+    }
 
     public void Brazilian()
     {
         _rulesContext.Rules = BaseRulesStrategyFactory.Create(BaseRulesStrategyType.Brazilian);
+        Debug.Log("Brazilian");
         Run();
     }
     public void American()

@@ -15,7 +15,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
 
     private static SingleStartBoardGenerator _instance;
 
-    private RulesContext _rulesContext;
+    private SingleRulesContext _rulesContext;
 
     void Awake()
     {
@@ -30,7 +30,7 @@ public class SingleStartBoardGenerator : MonoBehaviour
     }
     void Start()
     {
-        _rulesContext = FindObjectOfType<RulesContext>();
+        _rulesContext = FindObjectOfType<SingleRulesContext>();
         InitializeBoardParameters();
         GenerateTilesAndPieces();
         PositionCamera();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Board : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class Board : MonoBehaviour
     }
     private float _jumpDistance;
 
-    private RulesContext _rulesContext;
+    private SingleRulesContext _rulesContext;
     private GameColor _currentPlayerColor;
     private bool _gameRunning = true;
     private int _lightPlayerKingMovesWithoutCapture = 0;
@@ -42,7 +43,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        _rulesContext = FindObjectOfType<RulesContext>();
+        _rulesContext = FindObjectOfType<SingleRulesContext>();
         _currentPlayerColor = _rulesContext.Rules.StartingPieceColor;
 
         //BUG: Pieces dont get killed during victory check, temporarly executing it here
@@ -97,6 +98,7 @@ public class Board : MonoBehaviour
             if (Victory() || Draw())
             {
                 _gameRunning = false;
+                SceneManager.LoadScene(2);
                 break;
             }
             yield return new WaitForSeconds(1f);
@@ -110,7 +112,7 @@ public class Board : MonoBehaviour
         {
             // Victory
             GameColor wonColor = _currentPlayerColor == GameColor.Light ? GameColor.Dark : GameColor.Light;
-            Debug.Log($"{wonColor} won");
+            PlayerPrefs.SetString("result", $"{wonColor} won");
             return true;
         }
         return false;
@@ -120,7 +122,7 @@ public class Board : MonoBehaviour
         if (_lightPlayerKingMovesWithoutCapture >= 15 && _darkPlayerKingMovesWithoutCapture >= 15)
         {
             // Draw
-            Debug.Log("Draw");
+            PlayerPrefs.SetString("result", "Draw");
             return true;
         }
         return false;
