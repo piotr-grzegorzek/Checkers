@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
+    private const float _kingScaleMultiplier = 4;
+
     internal PieceType Type;
     internal GameColor PieceColor
     {
@@ -30,7 +32,8 @@ public class Piece : MonoBehaviour
     internal void MoveTo(Vector3 position)
     {
         transform.position = position;
-        transform.position = new Vector3(position.x, _board.PieceUpOffset, position.z);
+        float y = (Type == PieceType.King) ? _board.PieceUpOffset * _kingScaleMultiplier : _board.PieceUpOffset;
+        transform.position = new Vector3(position.x, y, position.z);
         if (Type == PieceType.Pawn)
         {
             CheckAndPromoteToKing(position);
@@ -52,7 +55,8 @@ public class Piece : MonoBehaviour
     {
         Type = PieceType.King;
         Vector3 scale = transform.localScale;
-        scale.y *= 2;
+        scale.y *= _kingScaleMultiplier;
         transform.localScale = scale;
+        MoveTo(transform.position);
     }
 }
