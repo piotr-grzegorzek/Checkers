@@ -520,7 +520,9 @@ MonoBehaviour:
   _movementMarkerPrefab: {fileID: 1238186707963280847, guid: 0fb04c9aa37b6ba458b1fb069e95b138, type: 3}
   _movementMarkersGameObject: {fileID: 1499675595}
   _board: {fileID: 789388402}
-  _rulesContext: {fileID: 0}
+  _piecesLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &1147758343
 Transform:
   m_ObjectHideFlags: 0

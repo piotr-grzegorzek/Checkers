@@ -51,6 +51,8 @@ public class Piece : MonoBehaviour
     private void PromoteToKing()
     {
         Type = PieceType.King;
-        _renderer.material.color = Color.red;
+        Vector3 scale = transform.localScale;
+        scale.y *= 2;
+        transform.localScale = scale;
     }
 }

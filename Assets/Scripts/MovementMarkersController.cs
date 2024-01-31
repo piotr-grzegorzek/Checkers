@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MovementMarkersController : MonoBehaviour
@@ -10,6 +12,8 @@ public class MovementMarkersController : MonoBehaviour
     GameObject _movementMarkersGameObject;
     [SerializeField]
     Board _board;
+    [SerializeField]
+    LayerMask _piecesLayerMask;
 
 
     private SingleRulesContext _rulesContext;
@@ -144,40 +148,30 @@ public class MovementMarkersController : MonoBehaviour
 
             Vector3 direction = (tile.transform.position - current.transform.position).normalized;
             float distanceToTile = Vector3.Distance(current.transform.position, tile.transform.position);
-            RaycastHit[] hits = Physics.RaycastAll(current.transform.position, direction, distanceToTile);
-            foreach (RaycastHit hit in hits)
+
+            if (!Physics.Raycast(current.transform.position, direction, out RaycastHit hit, distanceToTile, _piecesLayerMask))
             {
-                if (hit.collider.TryGetComponent<Piece>(out var hitPiece))
+                // If there are no pieces between the king and the target tile, the king can move
+                return true;
+            }
+            else
+            {
+                // king can move only if there is one enemy piece right before target tile
+                IEnumerable<Piece> piecesOnRoad = hit.collider.GetComponents<Piece>();
+                if (piecesOnRoad.Count() == 1)
                 {
-                    // If there's a piece between the king and the target tile, the king can capture it
-                    if (hitPiece.PieceColor != piece.PieceColor)
+                    Piece pieceOnRoad = piecesOnRoad.First();
+                    if (pieceOnRoad.PieceColor != piece.PieceColor)
                     {
-                        // check if on the way to target tile there is atleast one occurence of pieces being 1 tile away from each other
-                        // if there is, then king cannot move
-                        Vector3 directionToTarget = (tile.transform.position - current.transform.position).normalized;
-                        float distanceToTarget = Vector3.Distance(current.transform.position, tile.transform.position);
-                        RaycastHit[] hitsToTarget = Physics.RaycastAll(current.transform.position, directionToTarget, distanceToTarget);
-                        foreach (RaycastHit hitToTarget in hitsToTarget)
+                        // Check if the tile is one block away from pieceOnRoad and is between piece and pieceOnRoad
+                        if (Math.Round(Vector3.Distance(tile.transform.position, pieceOnRoad.transform.position), 1) == Math.Round(_board.SingleTileDistance, 1) && Vector3.Distance(piece.transform.position, tile.transform.position) > Vector3.Distance(piece.transform.position, pieceOnRoad.transform.position))
                         {
-                            if (hitToTarget.collider.TryGetComponent<Piece>(out var hitPieceToTarget))
-                            {
-                                if (Vector3.Distance(hitPieceToTarget.transform.position, hitPiece.transform.position) == _board.SingleTileDistance)
-                                {
-                                    return false;
-                                }
-                            }
+                            capturablePieces.Add(pieceOnRoad);
+                            return true;
                         }
-                        capturablePieces.Add(hitPiece);
-                    }
-                    else
-                    {
-                        // If there's a piece of the same color, the king cannot move
-                        return false;
                     }
                 }
             }
-            // If there are no pieces of the same color between the king and the target tile, the king can move
-            return true;
         }
         else
         {
@@ -187,19 +181,10 @@ public class MovementMarkersController : MonoBehaviour
                 // Single tile movement
                 return true;
             }
-            else
+            else if (distance == _board.JumpDistance)
             {
-                // If not a flying king, it can move only 1 tile or capture
-                if (distance == _board.SingleTileDistance)
-                {
-                    // Single tile movement
-                    return true;
-                }
-                else if (distance == _board.JumpDistance)
-                {
-                    // Jumping over a piece
-                    return HandleJumpOverPiece(tile, piece, darkTiles, capturablePieces);
-                }
+                // Jumping over a piece
+                return HandleJumpOverPiece(tile, piece, darkTiles, capturablePieces);
             }
         }
 
